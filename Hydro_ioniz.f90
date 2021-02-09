@@ -87,7 +87,7 @@
             alpha = maxval(abs(v) + cs)
 
             ! Evaluate time step according to CFL condition
-            dt = CFL*(r(2-Ng)-r(1-Ng))/alpha            
+            dt = CFL*minval(dr_j/(abs(v) + cs))            
             
             !-------------------------------------------------!
             
