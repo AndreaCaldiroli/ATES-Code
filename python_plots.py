@@ -13,7 +13,7 @@ RJ = 6.9911e9
 # LOAD DATA  
 
 # Our hydrodynamical profiles
-A = np.loadtxt('Hydro_ioniz.txt')
+A = np.loadtxt('./output/Hydro_ioniz.txt')
 r = A[:,0]
 rho_tmp = A[:,1]
 v   = A[:,2]
@@ -42,7 +42,7 @@ N = r.size              # Number of grid points
 
 
 # Load our ionization profiles
-A=np.loadtxt('Ion_species.txt')
+A=np.loadtxt('./output/Ion_species.txt')
 r_ion  = A[:,0]
 nhi    = A[:,1]
 nhii   = A[:,2]
