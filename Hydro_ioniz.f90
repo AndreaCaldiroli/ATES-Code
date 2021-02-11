@@ -71,7 +71,7 @@
       
       !------ Main temporal loop ------!
       
-      do while(du.ge.du_th.or.count.le.10)
+      do while(du.ge.du_th.and.count.le.10)
 
             !---- Time step evaluation ----! 
             
@@ -87,7 +87,7 @@
             alpha = maxval(abs(v) + cs)
 
             ! Evaluate time step according to CFL condition
-            dt = CFL*minval(dr_j/(abs(v) + cs))            
+            dt = CFL*minval(dr_j/(abs(v) + cs))         
             
             !-------------------------------------------------!
             
@@ -245,7 +245,7 @@
             
             !--- Write to files every 100th iteration---! 
             
-            if (mod(count,100).eq.1) then
+            if (mod(count,1000).eq.1) then
                   
                   ! Write thermodynamic and ionization profiles
                   call write_output(rho,v,p,T,heat,cool,eta,    &
