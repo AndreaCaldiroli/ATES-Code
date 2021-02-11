@@ -50,13 +50,6 @@ nhei   = A[:,3]
 nheii  = A[:,4]
 nheiii = A[:,5]
 
-A = np.genfromtxt('HAT-P-11b_Salz.dat')
-r_S = A[:,0]
-rho_S = A[:,1]/mu
-v_S = A[:,2] #km/s
-p_S = A[:,3]
-T_S = A[:,4]
-H_S = A[:,6]
 
 nh  = [nhi[j] + nhii[j] for j in range(N)] # Total hydrogen density
 nhe = [nhei[j] + nheii[j] + nheiii[j] for j in range(N)] # Total helium density
@@ -95,8 +88,6 @@ fr_heiii = nheiii/nhe   # HeIII fraction
 
 
 mom   = 4.*np.pi*v*rho*r**2.*mu*v0*R0**2.      # Our momentum
-mom_S = 4.*np.pi*(v_S*1.e5)*rho_S*(r_S)**2.*mu*R0**2. # Salz's momentum
-
 v_sound = np.sqrt(gam*T/T0)*v0      # Sound speed
 
 #--------------------------------------------------
@@ -205,7 +196,6 @@ fig.subplots_adjust(left   = 0.12,
 
 # Density
 ax[0,0].semilogy(r,rho)
-ax[0,0].semilogy(r_S,rho_S,'r')
 ax[0,0].set_title('Density')
 ax[0,0].set_xlabel('r/r_p')
 ax[0,0].set_ylabel('[cm^-3]')
@@ -215,7 +205,6 @@ ax[0,0].set_xlim([r[0],r[-1]])
 
 # Velocity
 ax[0,1].plot(r,v*v0*1e-5)
-ax[0,1].plot(r_S,v_S,'r')
 ax[0,1].set_title('Velocity')
 ax[0,1].set_xlabel('r/r_p')
 ax[0,1].set_ylabel('[km/s]')
@@ -224,13 +213,11 @@ ax[0,1].set_ylim([-1.0,1.2*v.max()*v0*1e-5])
 
 # Pressure
 ax[1,0].semilogy(r,p)
-ax[1,0].semilogy(r_S,p_S,'r')
 ax[1,0].set_title('Pressure')
 ax[1,0].set_xlim([r[0],r[-1]])
 
 # Temperature
 ax[1,1].plot(r,T)
-ax[1,1].plot(r_S,T_S,'r')
 ax[1,1].set_title('Temperature')
 ax[1,1].set_xlabel('r/r_p')
 ax[1,1].set_ylabel('[K]')
@@ -238,7 +225,6 @@ ax[1,1].set_xlim([r[0],r[-1]])
 
 # Momentum
 ax[2,0].semilogy(r,mom)
-ax[2,0].semilogy(r_S,mom_S,'r')
 ax[2,0].set_title('Momentum')
 ax[2,0].set_xlim([r[0],r[-1]])
 ax[2,0].set_xlabel('r/r_p')
