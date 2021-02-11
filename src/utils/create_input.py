@@ -243,7 +243,8 @@ def done_func(*args):
       
       # Rename file
       if (glob.write_ans.get() == 'y'):
-            os.rename("input_temp.inp", "input.inp")
+            if os.path.isfile("input_temp.inp"):                  
+                  os.rename("input_temp.inp", "input.inp")
                   
             close_func()
       
