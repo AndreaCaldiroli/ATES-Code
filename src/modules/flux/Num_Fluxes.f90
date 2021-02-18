@@ -67,24 +67,7 @@
             
             ! Output pressure
             p_out = 0.5*(pR + pL)
-      
-      !----------------------------------------------!      
-      
-      case ('LF') ! Global Lax Friedrichs
-            
-            ! Evaluate physical left and right flux
-            call Phys_flux(uL,FL)
-            call Phys_flux(uR,FR)
-            
-            ! Get vector of conservative variables
-            call W_to_U_comp(WL,uL)
-            call W_to_U_comp(WR,uR)
-            
-            ! Evaluate numerical flux
-            NF = 0.5*(FL + FR - alpha*(uR-uL))
-            
-            ! Output pressure
-            p_out = 0.5*(pR + pL)
+     
             
       !----------------------------------------------!
       
