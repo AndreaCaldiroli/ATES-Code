@@ -17,7 +17,7 @@
       !------- Global constants -------!
       
       real*8,parameter ::  g = 1.66667 		      ! Polytropic index
-      real*8,parameter ::  CFL = 0.4                  ! CFL number
+      real*8,parameter ::  CFL = 0.6                  ! CFL number
       real*8,parameter ::  pi = 3.1415926536          ! pi   
       real*8,parameter ::  mu = 1.673e-24 		! Hydrogen mass (g)
       real*8,parameter ::  kb_erg = 1.38e-16 		! Boltzmann constant in CGS units
