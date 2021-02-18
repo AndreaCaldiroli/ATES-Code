@@ -27,8 +27,7 @@ grid_type = ["Mixed","Stretched"]
 # Numerical fluxes
 num_flux = ["HLLC", 
             "ROE", 
-            "LLF",
-            "LF"]
+            "LLF"]
 
 # Reconstruction Methods
 rec_meth = ["PLM", "WENO3"]
