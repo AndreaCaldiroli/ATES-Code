@@ -103,7 +103,6 @@ str=" gfortran -J"$DIR_MOD" -I"$DIR_MOD" -fopenmp -g -fbacktrace \
       $DIR_RAD/ionization_equilibrium.f90\
       $DIR_STAT/Apply_BC.f90\
       $DIR_STAT/PLM_rec.f90\
-      $DIR_STAT/WENO3_rec.f90\
       $DIR_STAT/Source.f90\
       $DIR_STAT/Reconstruction.f90\
       $DIR_FLUX/speed_estimate_HLLC.f90\
