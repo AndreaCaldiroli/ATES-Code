@@ -1,6 +1,6 @@
 # EMDOT code
 
-The EMDOT code has been created to perform hydrodynamical simulations of the atmospheric mass loss from irradiated exoplanets. THe code description can be found at  <<insert citation>>. In the following we describe the code organization and give a basi example of usage.
+The EMDOT code has been created to perform hydrodynamical simulations of the atmospheric mass loss from irradiated exoplanets. The code description can be found at  << insert citation >>. In the following we describe the code organization and give a basi example of usage.
 
 ## Directories and files
 
@@ -25,7 +25,7 @@ In the `/src/modules` subdirectory the code's modules are subdivided as follows:
 * `/src/modules/time_step` : evaluation of the right hand side of the Runge-Kutta integrator.
 
 
-##  Installing and using the code
+##  Installing
 
 ### Requirements
 
@@ -41,5 +41,17 @@ Once exctracted, it is necessary to give execution permission to the `run_progra
 
     chmod +x run_program.sh
     
-To run the code, you simply have to run the bash file: `./run_program.sh`
+
+## Using the code
+
+To run the code, you simply have to run the bash file: `./run_program.sh`. The user is prompted to a window in which the parameters of the system to be simulated  and the numerical scheme to be used must be provided. See << insert citation >> for a detailed explanation of such parameters. If a system is not available in the precompiled archive (which is stored in `/src/utils/params_table.txt`), it is possible, after filling all the fields, to add it to the default list for later simulations by using the `Add planet` button. 
+
+
+
+
+
+
+
+
+
 
