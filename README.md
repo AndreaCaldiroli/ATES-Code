@@ -27,6 +27,19 @@ In the `/src/modules` subdirectory the code's modules are subdivided as follows:
 
 ##  Installing and using the code
 
+### Requirements
+
+The only software requirements to run the code are the `gfortran` compiler and a basic installation of `python3`. The only library requested outside the Standard Library of python is`numpy`.
+
+### Installation
+
 The code can be directly downloaded from the Github page or, in alternative, the repository can be cloned via 
+
     git clone https://github.com/AndreaCaldiroli/ExoCode2021
+    
+Once exctracted, it is necessary to give execution permission to the `run_program.sh` file:
+
+    chmod +x run_program.sh
+    
+To run the code, you simply have to run the bash file: `./run_program.sh`
 
