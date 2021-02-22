@@ -1,6 +1,6 @@
 # EMDOT code
 
-The EMDOT code has been created to perform hydrodynamical simulations of the atmospheric mass loss from irradiated exoplanets. The code description can be found at  << insert citation >>. In the following we describe the code organization and give a basi example of usage.
+The EMDOT code has been created to perform hydrodynamical simulations of the atmospheric mass loss from irradiated exoplanets. For a detailed description of the code, we refer to << insert citation >>. In the following we describe the code organization and give a basi example of usage.
 
 ## Directories and files
 
@@ -44,9 +44,13 @@ Once exctracted, it is necessary to give execution permission to the `run_progra
 
 ## Using the code
 
-To run the code, you simply have to run the bash file: `./run_program.sh`. The user is prompted to a window in which the parameters of the system to be simulated  and the numerical scheme to be used must be provided. See << insert citation >> for a detailed explanation of such parameters. If a system is not available in the precompiled archive (which is stored in `/src/utils/params_table.txt`), it is possible, after filling all the fields, to add it to the default list for later simulations by using the `Add planet` button. 
+To run the code, you simply have to run the bash file: `./run_program.sh`. 
 
+The user is prompted to a window in which the parameters of the system to be simulated and the numerical scheme to be used must be provided. See << insert citation >> for a detailed explanation of such parameters. If a system is not available in the precompiled archive (which is stored in `/src/utils/params_table.txt`), it is possible, after filling all the fields, to add it to the default list for later simulations by using the `Add planet` button. 
 
+The code proceed with the execution of the code after pressing the `Done` button. In the terminal, the current iteration number and the fractional variation of the momentum over the selected domain of interest, i.e.:
+
+    $\frac{\max\limits_{r>r_{esc}}\dot{M} - \min\limits_{r>r_{esc}}\dot{M}}{\min\limits_{r>r_{esc}}\dot{M}}
 
 
 
