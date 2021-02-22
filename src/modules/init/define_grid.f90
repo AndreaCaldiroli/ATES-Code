@@ -20,6 +20,22 @@
   
       select case (grid_type)
       
+      case ('Uniform')
+            !------ Uniform spaced grid ------!
+            
+            ! Grid spacing
+            dr = (r_max-1.0)/(1.0*N)
+            
+            ! Lower ghost cells
+            r(1-Ng) = 1.0
+            
+            ! Loop for others cell centers
+            do j = 2-Ng,N+Ng
+                  r(j) = r(j-1) + dr
+            enddo
+      
+      !--------------------------------------------------
+	    
       case ('Mixed') 
       
             !------ Salz's grid ------!
@@ -85,7 +101,11 @@
             do j = 1,Ng
                   r(N+j) = 2.0*r(N+j-1) - r(N+j-2)
             enddo
-            
+       
+       
+       !--------------------------------------------------
+       
+       
        case ('Stretched')
         
             !------ Regular stretched grid ------!
