@@ -22,7 +22,7 @@ kb = 1.38e-16           # Boltzmann constant
 #----- Data vectors for the table -----#
 
 # Grid_types
-grid_type = ["Mixed","Stretched"]
+grid_type = ["Uniform","Mixed","Stretched"]
 
 # Numerical fluxes
 num_flux = ["HLLC", 
