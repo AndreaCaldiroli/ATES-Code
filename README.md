@@ -50,8 +50,7 @@ The user is prompted to a window in which the parameters of the system to be sim
 
 The code proceed with the execution of the code after pressing the `Done` button. In the terminal, the current iteration number and the fractional variation of the momentum over the selected domain of interest, i.e.:
 
-    $\frac{\max\limits_{r>r_{esc}}\dot{M} - \min\limits_{r>r_{esc}}\dot{M}}{\min\limits_{r>r_{esc}}\dot{M}}
-
+   <img src="https://render.githubusercontent.com/render/math?math=$\frac{\max\limits_{r>r_{esc}}\dot{M} - \min\limits_{r>r_{esc}}\dot{M}}{\min\limits_{r>r_{esc}}\dot{M}}">
 
 
 
