@@ -50,9 +50,10 @@ The user is prompted to a window in which the parameters of the system to be sim
 
 The code proceed with the execution of the code after pressing the `Done` button. In the terminal, the current iteration number and the fractional variation of the momentum over the selected domain of interest, i.e.:
 
-   <img src="https://render.githubusercontent.com/render/math?math=\Delta \dot{M} = \frac{\max\dot{M} - \min\dot{M}}{\min\dot{M}} \quad for ~ r>r_{esc}">
+   <img src="https://render.githubusercontent.com/render/math?math=\Delta \dot{M} = \frac{\max\dot{M} - \min\dot{M}}{\min\dot{M}} \quad for  r>r_{esc}">
 
-
+By default, the code writes the current output of the simulations on two files, which are saved in the `/output/` directory. 
+A python script called `python_plots.py` is also available for live plots. 
 
 
 
