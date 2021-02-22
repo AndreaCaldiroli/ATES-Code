@@ -16,7 +16,7 @@
       real*8 :: f,df
       real*8 :: tol = 1.0
       real*8 :: q
-
+      real*8 :: dr
   
       select case (grid_type)
       
