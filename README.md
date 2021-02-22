@@ -61,6 +61,8 @@ By default, the code writes the current output of the simulations on two files, 
 6. Radiative heating rate (in CGS units)
 7. Radiative cooling rate (in CGS units)
 8. Heating efficiency (adimensional)
+
+
 The ionization profiles are saved in the `Ion_species.txt` file. The columns of the file correspond to the number densities of HI, HII, HeI, HeII, HeIII in cm^{-3}.
 If the `Load IC` flag is active in the input window, the code automatically chooses the last saved `Hydro_ioniz.txt` and `Ion_species.txt`files in the `/output/` directory and copies them onto two new files named, by default,`Hydro_ioniz_IC.txt` and `Ion_species_IC.txt`, which are loaded by the code. for the writing/reading formats consult the `/src/modules/file_IO/load_IC.f90` and `/src/modules/file_IO/write_output.f90` files.
 
