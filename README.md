@@ -1,6 +1,6 @@
 # EMDOT code
 
-The EMDOT code has been created to perform hydrodynamical simulations of the atmospheric mass loss from irradiated exoplanets. For a detailed description of the code, we refer to << insert citation >>. In the following we describe the code organization and give a basi example of usage.
+The EMDOT code has been created to perform hydrodynamical simulations of the atmospheric mass loss from irradiated exoplanets. For a detailed description of the code, we refer to << **Citation** >>. In the following we describe the code organization and give a basi example of usage.
 
 ## Directories and files
 
@@ -44,16 +44,27 @@ Once exctracted, it is necessary to give execution permission to the `run_progra
 
 ## Using the code
 
-To run the code, you simply have to run the bash file: `./run_program.sh`. 
+In order to run the code, the bash file must be executed: `./run_program.sh`. 
 
-The user is prompted to a window in which the parameters of the system to be simulated and the numerical scheme to be used must be provided. See << insert citation >> for a detailed explanation of such parameters. If a system is not available in the precompiled archive (which is stored in `/src/utils/params_table.txt`), it is possible, after filling all the fields, to add it to the default list for later simulations by using the `Add planet` button. 
+The user is prompted to a window in which the parameters of the system to be simulated and the numerical scheme to be used must be provided. See << **Citation** >> for a detailed explanation of such parameters. If a system is not available in the precompiled archive (which is stored in `/src/utils/params_table.txt`), it is possible, after filling all the fields, to add it to the default list for later simulations by using the `Add planet` button. 
 
 The code proceed with the execution of the code after pressing the `Done` button. In the terminal, the current iteration number and the fractional variation of the momentum over the selected domain of interest, i.e.:
 
-   <img src="https://render.githubusercontent.com/render/math?math=\Delta \dot{M} = \frac{\max\dot{M} - \min\dot{M}}{\min\dot{M}} \quad for  r>r_{esc}">
+   <img src="https://render.githubusercontent.com/render/math?math=\Delta \dot{M} = \dfrac{\max\dot{M} - \min\dot{M}}{\min\dot{M}} \quad for \quad r>r_{esc}">
 
-By default, the code writes the current output of the simulations on two files, which are saved in the `/output/` directory. 
-A python script called `python_plots.py` is also available for live plots. 
+By default, the code writes the current output of the simulations on two files, which are saved in the `/output/` directory. The `Hydro_ioniz.txt` file stores the hydrodynamical variables, which are saved in column vectors in the following order:
+1. radial distance (in unit of the planetary radius)
+2. mass density (in unit of the proton mass)
+3. velocity (in unit of the scale velocity - see << **Citation** >>)
+4. pressure (in CGS units)
+5. Temperature (in Kelvin)
+6. Radiative heating rate (in CGS units)
+7. Radiative cooling rate (in CGS units)
+8. Heating efficiency (adimensional)
+The ionization profiles are saved in the `Ion_species.txt` file. The columns of the file correspond to the number densities of HI, HII, HeI, HeII, HeIII in cm^{-3}.
+If the `Load IC` flag is active in the input window, the code automatically chooses the last saved `Hydro_ioniz.txt` and `Ion_species.txt`files in the `/output/` directory and copies them onto two new files named, by default,`Hydro_ioniz_IC.txt` and `Ion_species_IC.txt`, which are loaded by the code. for the writing/reading formats consult the `/src/modules/file_IO/load_IC.f90` and `/src/modules/file_IO/write_output.f90` files.
+
+Finally, a python script called `python_plots.py` is also available for live plots. 
 
 
 
