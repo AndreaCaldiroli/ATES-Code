@@ -1,6 +1,6 @@
 # EMDOT code
 
-The EMDOT code has been created to perform hydrodynamical simulations of the atmospheric mass loss from irradiated exoplanets. THe code description can be found at  insert citation . In the following we describe the code organization and give a basi example of usage.
+The EMDOT code has been created to perform hydrodynamical simulations of the atmospheric mass loss from irradiated exoplanets. THe code description can be found at  <<insert citation>>. In the following we describe the code organization and give a basi example of usage.
 
 ## Directories and files
 
@@ -24,4 +24,9 @@ In the `/src/modules` subdirectory the code's modules are subdivided as follows:
 * `/src/modules/states`: subroutines for the hydrodynamical reconstruction step (PLM, ESWENO3), definition of the boundary conditions and evaluation of the source term;
 * `/src/modules/time_step` : evaluation of the right hand side of the Runge-Kutta integrator.
 
+
+##  Installing and using the code
+
+The code can be directly downloaded from the Github page or, in alternative, the repository can be cloned via 
+    git clone https://github.com/AndreaCaldiroli/ExoCode2021
 
