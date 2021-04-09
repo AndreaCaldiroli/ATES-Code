@@ -71,7 +71,7 @@
       
       !------ Main temporal loop ------!
       
-      do while(du.ge.du_th.and.count.le.1)
+      do while(du.ge.du_th)
 
             !---- Time step evaluation ----! 
             
