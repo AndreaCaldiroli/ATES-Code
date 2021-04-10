@@ -1,4 +1,4 @@
-# ATES code
+# The ATES code
 
 The ATES code has been created to perform hydrodynamical simulations of the atmospheric mass loss from irradiated exoplanets. For a detailed description of the code, we refer to << **Citation** >>. In the following we describe the code organization and give a basi example of usage.
 
