@@ -1,7 +1,7 @@
       subroutine hybrd1(fcn,n,x,fvec,tol,info,wa,lwa,params)
       integer n,info,lwa
       double precision tol
-      double precision x(n),fvec(n),wa(lwa),params(11)
+      double precision x(n),fvec(n),wa(lwa),params(14)
       external fcn
       !     **********
       
