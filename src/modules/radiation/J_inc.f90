@@ -10,6 +10,11 @@
       double precision function J_inc(E)
       real*8, intent(in) ::  E
       real*8 :: Lrapp,J_X,J_EUV
+      real*8 :: JEUVnorm,JXnorm
+      real*8 :: P1
+      
+      ! Substitution
+      P1 = PLind + 1.0
       
       ! Ratio of luminosities
       Lrapp = 10.0**(Lx-LEUV)
@@ -20,11 +25,29 @@
       ! EUV flux
       J_EUV = J_XUV/(1.0+Lrapp)
       
+      ! Normalizations for different power-law index
+      if (PLind.eq.(-1.0)) then
+      	
+      	JEUVnorm = J_EUV/log(e_mid/e_low)
+
+      	JXnorm = J_X/log(e_top/e_mid)
+      	
+      	write(*,*) "LOG"
+      	
+	else
+      
+		JEUVnorm = J_EUV*P1/(e_mid**P1 - e_low**P1)
+
+      	JXnorm = J_X*P1/(e_top**P1 - e_mid**P1)
+		
+	endif      
+      
+      
       ! Parametrization of incident spectrum
       if(E.lt.e_mid) then
-            J_inc = J_EUV/log(e_mid/e_low)*1.0/E
+            J_inc = JEUVnorm*E**PLind
       else
-            J_inc = J_X/log(e_top/e_mid)*1.0/E
+            J_inc = JXnorm*E**PLind
       endif
       
       end function
