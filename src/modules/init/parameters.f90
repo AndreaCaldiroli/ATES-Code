@@ -65,7 +65,7 @@
       real*8  ::  HeH		! He/H ratio	
       real*8  ::  rho1        ! Adimensional number density at origin
       real*8  ::  a_tau       ! Rate correction coefficient
-      
+      real*8  ::  PLind		! Index of spectral power law
       
       !------- Normalizations -------!
 
