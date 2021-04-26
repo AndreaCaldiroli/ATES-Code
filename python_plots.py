@@ -65,7 +65,10 @@ mom_S = 4.*np.pi*(v_S[:]*1.e5)*rho_S[:]*r_S[:]**2.*R0**2.  # Salz's momentum
 
 # Correct mass flux for the current 3D approximation method
 if appx_mth.strip() == "Rate/2 + Mdot/2":
-	mom = 0.5*mom[:]
+	mom_out = 0.5*mom[-20]
+if appx_mth.strip() == "Mdot/4":
+	mom_out = 0.25*mom[-20]
+
 
 #--------------------------------------------------
 
@@ -297,7 +300,8 @@ ax[1,1].set_ylim([0,1])
 
 
 # Print the mass loss rate
-print("Log10 of mass-loss-rate = ", np.log10(mom[-20]/4.0))
+print("2D approximation method: ", appx_mth.strip())
+print("Log10 of mass-loss-rate = ", np.log10(mom_out))
 
 
 
