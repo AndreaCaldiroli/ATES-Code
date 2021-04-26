@@ -31,9 +31,7 @@
       	JEUVnorm = J_EUV/log(e_mid/e_low)
 
       	JXnorm = J_X/log(e_top/e_mid)
-      	
-      	write(*,*) "LOG"
-      	
+      	      	
 	else
       
 		JEUVnorm = J_EUV*P1/(e_mid**P1 - e_low**P1)
