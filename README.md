@@ -53,6 +53,8 @@ The code is executed by pressing the `Done` button. In the terminal, the current
 
    <img src="https://render.githubusercontent.com/render/math?math=\Delta \dot{M} = \dfrac{\max\dot{M} - \min\dot{M}}{\min\dot{M}} \quad for \quad r>r_{esc}">
 
+## Output files
+
 The code writes the current output of the simulations on two file saved in the `$MAIN/output` directory. The `$MAIN/output/Hydro_ioniz.txt` file stores the hydrodynamical variables, which are saved in column vectors in the following order:
 1. radial distance (in unit of the planetary radius)
 2. mass density (in unit of the proton mass)
