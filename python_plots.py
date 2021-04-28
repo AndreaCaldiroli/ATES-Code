@@ -64,6 +64,7 @@ mom   = 4.*np.pi*v[:]*rho[:]*r[:]**2.*v0*R0**2.            # Our momentum
 mom_S = 4.*np.pi*(v_S[:]*1.e5)*rho_S[:]*r_S[:]**2.*R0**2.  # Salz's momentum
 
 # Correct mass flux for the current 3D approximation method
+mom_out = mom[-20]
 if appx_mth.strip() == "Rate/2 + Mdot/2":
 	mom_out = 0.5*mom[-20]
 if appx_mth.strip() == "Mdot/4":
