@@ -52,7 +52,7 @@ The user is asked to insert the physical parameters of the system to be simulate
 
 The code is executed by pressing the `Done` button. In the terminal, the current iteration number and the fractional variation of the momentum over the selected domain of interest, i.e.:
 
-   <img src="https://render.githubusercontent.com/render/math?math=\Delta \dot{M} = \dfrac{\max\dot{M} - \min\dot{M}}{\min\dot{M}} \quad for \quad r>r_{esc}">
+   {\dfrac{\max\dot{M} - \min\dot{M}}{\min\dot{M}} \quad for \quad r>r_{esc}}
 
 ## Output files
 
