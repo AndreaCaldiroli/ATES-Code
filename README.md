@@ -51,9 +51,9 @@ In order to run the code, the bash file must be executed: `.$MAIN/run_program.sh
 The user is asked to insert the physical parameters of the system to be simulated. See << **Citation** >> for a detailed explanation of such parameters. If a system is not available in the precompiled archive (which is stored in `$MAIN/src/utils/params_table.txt`), it is possible to add it to the default list for later simulations by using the `Add planet` button. 
 
 The code is executed by pressing the `Done` button. In the terminal, the current iteration number and the fractional variation of the momentum over the selected domain of interest, i.e.:
-
+```math
    {\dfrac{\max\dot{M} - \min\dot{M}}{\min\dot{M}} \quad for \quad r>r_{esc}}
-
+```
 ## Output files
 
 The code writes the current output of the simulations on two file saved in the `$MAIN/output` directory. The `$MAIN/output/Hydro_ioniz.txt` file stores the hydrodynamical variables, which are saved in column vectors in the following order:
