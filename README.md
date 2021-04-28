@@ -21,6 +21,7 @@ The main directory (`$MAIN`) of the code consists of the following elements:
 * the main code file `$MAIN/Hydro_ioniz.f90`;
 * the bash script `$MAIN/run_program.sh` that takes care of the compilation and the execution of the code;
 * the `$MAIN/src` directory, where all the code modules are stored.
+* the `$MAIN/python_plots.py` python3 for live plots.
 
 The `$MAIN/src` directory contains three major sudirectories:
 * the `$MAIN/src/utils` folder contains the python3 files dedicated for the creatioin of the input interface;
@@ -71,10 +72,3 @@ The ionization profiles are saved in the `$MAIN/output/Ion_species.txt` file. Th
 The post-processed profile are written on the `$MAIN/output/Hydro_ioniz_adv.txt` and `$MAIN/output/Ion_species_adv.txt` files. The data are formatted as the `$MAIN/output/Hydro_ioniz.txt` and `$MAIN/output/Ion_species.txt` files.
 
 If the `Load IC` flag is active in the input window, the code automatically chooses the last saved `$MAIN/output/Hydro_ioniz.txt` and `$MAIN/output/Ion_species.txt`files in the `$MAIN/output` directory and copies them onto two new files named, by default,`$MAIN/output/Hydro_ioniz_IC.txt` and `$MAIN/output/Ion_species_IC.txt`, which are loaded by the code. For the writing/reading formats consult the `$MAIN/src/modules/file_IO/load_IC.f90` and `$MAIN/src/modules/file_IO/write_output.f90` files.
-
-Finally, a python script called `$MAIN/python_plots.py` is also available for live plots. 
-
-
-
-
-
