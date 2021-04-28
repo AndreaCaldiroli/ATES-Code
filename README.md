@@ -1,11 +1,12 @@
 # The ATES code
 
-The ATES code has been created to perform hydrodynamical simulations of the atmospheric mass loss from irradiated exoplanets. For a detailed description of the code, we refer to << **Citation** >>. In the following we describe the code organization and give a basi example of usage.
+The ATES code has been created to perform hydrodynamical simulations of the atmospheric mass loss from irradiated exoplanets. For a detailed description of the code, we refer to << **Citation** >>. In the following we describe the code organization and how to run.
 
 
 ### Requirements
 
-The only software requirements to run the code are the `gfortran` compiler and a basic installation of `python3`. The only library requested outside the Standard Library of python is`numpy`.
+The code is compiled with the `gfortran` compiler, and has been tested successfully in version 9.3.0. 
+A basic installation of `python3` is required. The following libraries are used: `numpy,tkinter,os,shutil,amtplotlib`.
 
 ### Installation
 
