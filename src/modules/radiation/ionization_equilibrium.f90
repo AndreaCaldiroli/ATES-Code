@@ -20,7 +20,7 @@
 	integer :: lwa     ! Working array length
 	integer i,j,k,info
 
-	real*8, dimension(1-Ng:N+Ng), intent(in)   :: T_in,n_in!r,
+	real*8, dimension(1-Ng:N+Ng), intent(in)   :: T_in,n_in
 	real*8, dimension(1-Ng:N+Ng,5), intent(in) :: f_sp_in
 	 
 	real*8, dimension(1-Ng:N+Ng) ::  T_K      ! Dimensional temperature
@@ -182,7 +182,7 @@
 	! Initial optical depth 
       deltal = (s_hi(1)*N1(j)                               &
               + s_hei(1)*N15(j)                             &       
-              + s_heii(1)*N2(j))*1.0d-18	
+              + s_heii(1)*N2(j))*1.0e-18	
 
       ilo_f =  F_XUV(1)*exp(-deltal)/(1.0+a_tau*deltal)
 
