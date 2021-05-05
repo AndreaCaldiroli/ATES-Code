@@ -136,28 +136,23 @@
 	ne  = nhii + nheii + 2.0*nheiii
 	
 	!----------------------------------!
+		
+	N1(N+Ng)  = dr_j(N+Ng)*R0*nhi(N+Ng)
+	N15(N+Ng) = dr_j(N+Ng)*R0*nhei(N+Ng)
+	N2(N+Ng)  = dr_j(N+Ng)*R0*nheii(N+Ng)
 	
-	! Evaluate column densities by integration
-	do j = N+Ng-1,2-Ng,-1	
+	
+      do j = N+Ng-1,1-Ng,-1	
 	
 	      ! Spacing
-	      dr = 0.5*(r(j+1)-r(j-1))*R0
+	      dr = dr_j(j)*R0
 	      
 	      ! Evaluate new column densities by integration
 	      N1(j)  = N1(j+1)  + nhi(j)*dr         ! HI
 	      N15(j) = N15(j+1) + nhei(j)*dr	  ! HeI 
 	      N2(j)  = N2(j+1)  + nheii(j)*dr       ! HeII 
 
-	enddo
-	
-	! Boundary values
-	N1(1-Ng)  = N1(2-Ng)   
-	N15(1-Ng) = N15(2-Ng)  
-	N2(1-Ng)  = N2(2-Ng)
-	
-	N1(N+Ng)  = N1(N+Ng-1)   
-	N15(N+Ng) = N15(N+Ng-1)  
-	N2(N+Ng)  = N2(N+Ng-1)   
+	enddo 
 	
 
       !----------------------------------!
