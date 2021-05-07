@@ -104,6 +104,7 @@ str=" gfortran -J"$DIR_MOD" -I"$DIR_MOD" -fopenmp -g -fbacktrace \
       $DIR_RAD/J_inc.f90\
       $DIR_RAD/Cool_coeff.f90\
       $DIR_RAD/ionization_equilibrium.f90\
+      $DIR_NLSOLVE/T_equation.f90\
       $DIR_PPC/post_process_adv.f90\
       $DIR_STAT/Apply_BC.f90\
       $DIR_STAT/PLM_rec.f90\
