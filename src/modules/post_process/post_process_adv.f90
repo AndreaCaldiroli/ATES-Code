@@ -6,8 +6,7 @@
 	use System_implicit_adv_HeH	
 	use System_implicit_adv_H
 	use Cooling_Coefficients
-	use output_write
-	
+	use output_write	
 	use equation_T
 	
 	implicit none
@@ -459,15 +458,16 @@
 	!	the ionization profile after the advection correction
 
 	
-	! Temperature following energy equation
+	! Initialize temperature
 	T_out(1-Ng) = 1.0
 	T_out(2-Ng) = 1.0
 	T_out = T_K/T0
 	
 	mmw = (nh + 4.0*nhe)/(nh + nhe + ne)
 	
-	do j = 5-Ng,N+Ng
-
+	do j = 3-Ng,N+Ng
+		
+		! Substitutions
 		rhop = rho(j)
 		rhom = rho(j-1)
 		vm = v(j-1) 
@@ -477,10 +477,10 @@
 		mup = mmw(j)
 
 
-	 	!--- Solve equation for temperature ---!
-
-		! Full implicit	 	
-	 	params(1)  = nhi(j)
+	 	!--- Solve equation for temperature implicitly ---!
+		
+		! Parameters
+		params(1)  = nhi(j)
 	 	params(2)  = nhii(j)
 	 	params(3)  = nhei(j)
 	 	params(4)  = nheii(j)
@@ -507,10 +507,11 @@
 	 	
 	enddo
 	
+	! Update temperature
 	p_out = (n_tot + ne)/n0*T_out
 
 
-	!---- Update new cooling rates ----!	
+	!---- Update cooling rates ----!	
 			
 	do j = 1-Ng,N+Ng
 	
@@ -552,9 +553,8 @@
 		
 	!----------------------------------!
       
-      ! Update ionization-dependent vectors before writing
-      
-      ! Adimensionalize before writing
+ 
+      ! Adimensionalize ion densities before writing
       nhi_w    = nhi/n0
       nhii_w   = nhii/n0
       nhei_w   = nhei/n0
