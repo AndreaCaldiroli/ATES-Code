@@ -1,5 +1,5 @@
 	module equation_T
-	! Ionization equilibrium system with both H and He
+	! Equation for temperature at the steady state
 	
 	use global_parameters
 	use Cooling_Coefficients
@@ -23,7 +23,8 @@
 	real*8  :: Told,heaold
 	real*8  :: reco,coio,brem,coex,cool
 	real*8  :: TT
-
+	
+	! Parameters
 	nhi    = params(1)
 	nhii   = params(2)
 	nhei   = params(3)
@@ -36,11 +37,12 @@
       dr	 = params(10)
       Told   = params(11)
       heaold = params(12)
+      ne = nhii + nheii + 2.0*nheiii
       
-	
+	! Substitutions
 	TT = x(1)*T0
-	ne = nhii + nheii + 2.0*nheiii
 	
+	!--- Evaluate cooling rates ---!
 			
       ! Cooling rate
       reco  =  rec_cool_HII(TT)*nhii     & ! HII
