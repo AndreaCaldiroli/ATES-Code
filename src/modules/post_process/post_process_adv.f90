@@ -8,13 +8,15 @@
 	use Cooling_Coefficients
 	use output_write
 	
+	use equation_T
+	
 	implicit none
 	
 	
 	contains
 	
-	subroutine post_process_adv(rho,v,p,T_in,heat,cool,eta,    &
-                                  nhi_in,nhii_in,		     &
+	subroutine post_process_adv(rho,v,p,T_in,heat,cool,eta,   &
+                                  nhi_in,nhii_in,		          &
                                   nhei_in,nheii_in,nheiii_in)
                                   
                                   
@@ -27,10 +29,10 @@
 	
 	
 	integer :: N_eq    ! Numbers of equations
-	integer :: lwa     ! Working array length
+	integer :: lwa,lwa_T     ! Working array length
 	integer i,j,k,info
 	 
-	real*8, dimension(1-Ng:N+Ng) ::  T,T_K      ! Dimensional temperature
+	real*8, dimension(1-Ng:N+Ng) ::  T,T_K,p_out,T_out     ! Dimensional temperature
 	real*8, dimension(1-Ng:N+Ng) ::  nh,nhe,ne,n_tot 
 	
 	! Column densities                                 
@@ -45,9 +47,13 @@
  	! Ionization coefficients
       real*8, dimension(1-Ng:N+Ng) ::  a_ion_HI,a_ion_HeI,a_ion_HeII 
       
+      ! Heating, cooling
+      real*8, dimension(1-Ng:N+Ng) ::  theat,tcool
+      
  	! Updated species densities
       real*8, dimension(1-Ng:N+Ng) :: nhi,nhii
       real*8, dimension(1-Ng:N+Ng) :: nhei,nheii,nheiii
+      real*8, dimension(1-Ng:N+Ng) :: mmw
       
       real*8, dimension(1-Ng:N+Ng) :: nhi_w,nhii_w
       real*8, dimension(1-Ng:N+Ng) :: nhei_w,nheii_w,nheiii_w
@@ -65,8 +71,11 @@
       real*8 :: elo,eup                         ! Energy parameters
       real*8 :: e_th_HI,e_th_HeI,e_th_HeII      ! Treshold energies
       real*8 :: tol,dpmpar                      ! Equilibrium system setup
-
-
+      real*8 :: Hea_1 		          	      ! Heating rates
+      real*8 :: brem,coex,coio,reco             ! Cooling rates
+      real*8 :: iup_H,ilo_H                     ! Heating rate integral variables         
+      
+      
 	! Substitution in the ODE solution
 	real*8 :: r_p,r_m
 	real*8 :: As
@@ -76,7 +85,12 @@
       real*8, dimension(:), allocatable :: wa
       real*8, dimension(:), allocatable :: params
 
-	
+	real*8 :: rhop,rhom,vp,mum,mup,den,vm
+	real*8 :: coolm,heatm,qm
+	real*8 :: sys_sol_T, sys_x_T
+      real*8 :: wa_T(8)
+      
+      
 	!----------------------------------------------------------!
       
       ! Allocate variables according to composition
@@ -145,7 +159,7 @@
 	      N15(j) = N15(j+1) + nhei(j)*dr	  ! HeI 
 	      N2(j)  = N2(j+1)  + nheii(j)*dr       ! HeII 
 
-	enddo  
+	enddo 
 	
 
       !----------------------------------!
@@ -337,19 +351,208 @@
 	      
 	enddo
       
+      !---------------------------------------------------------
       
-      !----------------------------------!
+      !------- Fix stationarity of new pressure profile -------!
       
-      ! Update ionization-dependent vectors before writing
+      
+      !---- Update column densities ----!
+      
+      N1(N+Ng)  = dr_j(N+Ng)*R0*nhi(N+Ng)
+	N15(N+Ng) = dr_j(N+Ng)*R0*nhei(N+Ng)
+	N2(N+Ng)  = dr_j(N+Ng)*R0*nheii(N+Ng)
+	
+	
+      do j = N+Ng-1,1-Ng,-1	
+	
+	      ! Spacing
+	      dr = dr_j(j)*R0
+	      
+	      ! Evaluate new column densities by integration
+	      N1(j)  = N1(j+1)  + nhi(j)*dr         ! HI
+	      N15(j) = N15(j+1) + nhei(j)*dr	  ! HeI 
+	      N2(j)  = N2(j+1)  + nheii(j)*dr       ! HeII 
+
+	enddo
+	
+	
+	
+      !---- Update densities and temperature ----!
       
       ! Total number density
       n_tot = nhi + nhii + nhei + nheii + nheiii
       
-      ! Electron density 
+      ! Free electron density (assuming overall neutrality)
+	nh  = nhi  + nhii 
+	nhe = nhei + nheii + nheiii 
       ne  = nhii + nheii + 2.0*nheiii
       
-      ! Temperature profile
-      T = p*n0/(n_tot + ne)   
+	!----------------------------------!
+	
+	!---- Update photoheating rate ----!
+	
+	do j = 1-Ng,N+Ng   
+	
+	! Initialization of integrands
+	Hea_1  = 0.0
+	     
+	elo    = e_v(1)		!Initial lower boundary of integration
+	
+	! Initial optical depth 
+	deltal = (s_hi(1)*N1(j)                               &
+	        + s_hei(1)*N15(j)                             &       
+	        + s_heii(1)*N2(j))*1.0d-18	
+	
+	ilo_f =  F_XUV(1)*exp(-deltal)/(1.0+a_tau*deltal)
+	
+	
+	ilo_H  = ilo_f*(                                    &
+		   nhi(j)*(1.0-e_th_HI/elo)*s_hi(1)    +      &
+		   nhei(j)*(1.0-e_th_HeI/elo)*s_hei(1) +      &
+		   nheii(j)*(1.0-e_th_HeII/elo)*s_heii(1))
+	
+		                      	            
+	         do i = 2,Nl
+	         
+	         ! Upper boundary of i-th interval of integration 
+	         eup    = e_v(i)	
+	
+	         ! Total optical depth at heigth r
+		   deltal = (s_hi(i)*N1(j)                    &
+			      +s_hei(i)*N15(j)                  &
+	         	      +s_heii(i)*N2(j))*1.0e-18	
+			   
+			   
+			   ! Upper integrand for photoionization rate
+			   iup_f = F_XUV(i)*exp(-deltal)/(1.0+a_tau*deltal)
+		    
+		                         		     
+			   ! Upper integrand for photoheating rate 
+		         iup_H = iup_f*(                                  &
+				     nhi(j)*(1.0-e_th_HI/eup)*s_hi(i) +       &
+				     nhei(j)*(1.0-e_th_HeI/eup)*s_hei(i) +    &
+				     nheii(j)*(1.0-e_th_HeII/eup)*s_heii(i))
+	         
+	
+	         ! Evaluate photoheating integral (eV/s)
+		   Hea_1  = Hea_1                                     &
+		            +0.5*(iup_H+ilo_H)*(eup-elo) 
+	         
+	                      
+		   ! Renew lower boundary and integrand
+	         elo = eup 
+	         ilo_H = iup_H         
+	         
+	         enddo
+	
+	
+	! Multiply for the dimensional coefficient 
+	theat(j)   = Hea_1*1.0e-18/q0	
+	
+	enddo
+	
+
+	!----------------------------------!
+	
+	!---- Solve stationary energy equation ----!
+	! This procedure uses the same velocity profile and 
+	!	the ionization profile after the advection correction
+
+	
+	! Temperature following energy equation
+	T_out(1-Ng) = 1.0
+	T_out(2-Ng) = 1.0
+	T_out = T_K/T0
+	
+	mmw = (nh + 4.0*nhe)/(nh + nhe + ne)
+	
+	do j = 5-Ng,N+Ng
+
+		rhop = rho(j)
+		rhom = rho(j-1)
+		vm = v(j-1) 
+		vp = v(j)
+		dr = r(j) - r(j-1)
+		mum = mmw(j-1)
+		mup = mmw(j)
+
+
+	 	!--- Solve equation for temperature ---!
+
+		! Full implicit	 	
+	 	params(1)  = nhi(j)
+	 	params(2)  = nhii(j)
+	 	params(3)  = nhei(j)
+	 	params(4)  = nheii(j)
+	 	params(5)  = nheiii(j)
+	 	params(6)  = mmw(j)
+	 	params(7)  = mmw(j-1)
+	 	params(8)  = rhop*vp
+	 	params(9)  = mum*vp*(rhop-rhom)
+	 	params(10) = dr
+	 	params(11) = T_out(j-1)
+	 	params(12) = theat(j) 
+	 		 	
+	 	
+	 	! Initial guess of solution
+		sys_x_T = T_out(j) 
+		
+		! Call hybrd1 routine (from minpack)
+		call hybrd1(T_equation,1,sys_x_T,sys_sol_T,   &
+		            tol,info,wa_T,8,params) 
+		
+		
+		! Exctract solution profiles	
+		T_out(j) = sys_x_T 	
+	 	
+	enddo
+	
+	p_out = (n_tot + ne)/n0*T_out
+
+
+	!---- Update new cooling rates ----!	
+			
+	do j = 1-Ng,N+Ng
+	
+		TT = T_out(j)*T0
+		
+		! Cooling rate
+		reco  =  rec_cool_HII(TT)*nhii(j)     & ! HII
+		       + rec_cool_HeII(TT)*nheii(j)   & ! HeII
+		       + rec_cool_HeIII(TT)*nheiii(j)   ! HeIII
+		
+		
+		!-- Collisional ionization --!
+		
+		
+		! Cooling rate
+		coio =  2.179e-11*ion_coeff_HI(TT)*nhi(j)  	       & ! HI
+		      + 3.940e-11*ion_coeff_HeI(TT)*nhei(j) 		 & ! HeI
+			+ kb_erg*631515.0*ion_coeff_HeII(TT)*nheii(j)      ! HeII
+		
+		!-- Bremsstrahlung --!
+		
+		! Cooling rate
+		brem = 1.426e-27*sqrt(TT)*                          &
+			 (ih**2.0*GF(TT,ih)*nhii(j) +                 & ! HII
+			 ihe**2.0*GF(TT,ihe)*(nheii(j)+nheiii(j)) )     ! He
+		
+		!-- Collisional excitation --!
+		
+		! Collisional excitation 
+		coex = coex_rate_HI(TT)*nhi(j)       &    ! HI
+		     + coex_rate_HeI(TT)*nhei(j)     &    ! HeI
+		     + coex_rate_HeII(TT)*nheii(j)        ! HeII
+		
+		
+		! Total cooling rate in erg/(s cm^3)
+		tcool(j) = ne(j)*(brem + coex + reco + coio)/q0
+	 
+	enddo
+		
+	!----------------------------------!
+      
+      ! Update ionization-dependent vectors before writing
       
       ! Adimensionalize before writing
       nhi_w    = nhi/n0
@@ -358,13 +561,14 @@
       nheii_w  = nheii/n0
       nheiii_w = nheiii/n0
       
+
       !----------------------------------!
       
       ! Write updated thermodynamic and ionization profiles
-      call write_output(rho,v,p,T,heat,cool,eta,    		        &
+      call write_output(rho,v,p_out,T_out,theat,tcool,eta,    	  &
                         nhi_w,nhii_w,nhei_w,nheii_w,nheiii_w,'ad')
                                    
-                                   	
+
 	end subroutine post_process_adv
 	
 	
