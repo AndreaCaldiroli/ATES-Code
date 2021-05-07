@@ -35,13 +35,13 @@
       ! Load thermodynamic variables
       open(unit = 1, file = './output/Hydro_ioniz_IC.txt')
             do j = 1-Ng,N+Ng
-                  read(1,2) tmp,tab,      &
-                            tmp,tab,      &
-                            v(j),tab,     &
-                            p_l(j),tab,   &
-                            T_l(j),tab,   &
-                            tmp,tab,      &
-                            tmp,tab,      &
+                  read(1,*) tmp,      &
+                            tmp,      &
+                            v(j),     &
+                            p_l(j),   &
+                            T_l(j),   &
+                            tmp,      &
+                            tmp,      &
                             tmp1
 
             enddo
@@ -56,11 +56,11 @@
       ! Load ionization profiles
       open(unit = 2, file = './output/Ion_species_IC.txt')
       do j = 1-Ng,N+Ng
-            read(2,3)  r(j),tab,        & ! Rad.
-                       nhi_l(j),tab,    & ! HI
-       	           nhii_l(j),tab,   & ! HII
-       	           nhei_l(j),tab,   & ! HeI
-      	           nheii_l(j),tab,  & ! HeII
+            read(2,*)  r(j),        & ! Rad.
+                       nhi_l(j),    & ! HI
+       	           nhii_l(j),   & ! HII
+       	           nhei_l(j),   & ! HeI
+      	           nheii_l(j),  & ! HeII
       	           nheiii_l(j)       ! HeIII
       enddo
       close(2)
