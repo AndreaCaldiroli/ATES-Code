@@ -34,6 +34,9 @@
 
       ! Temporal step
       real*8 :: dt
+      
+      ! Mdot value
+      real*8 :: Mdot
  
       ! Vectors of thermodynamical variables
       real*8, dimension(1-Ng:N+Ng) :: rho,v,E,p,T,cs
@@ -264,10 +267,12 @@
       call write_output(rho,v,p,T,heat,cool,eta,    &
                         nhi,nhii,nhei,nheii,nheiii,'eq')
       
+      write(*,*) ' '
       write(*,*) "-- Time integration done --"
       
       !---------------------------------------------------!
       
+      write(*,*) ' '
       write(*,*) "-- Starting post-processing routine --"
       
       ! Set advection varyable to true
@@ -275,7 +280,7 @@
       call post_process_adv(rho,v,p,T,heat,cool,eta,    &
                             nhi,nhii,nhei,nheii,nheiii)
       
-      
+      write(*,*) ' '
       write(*,*) "-- Post-processing routine done --"                           
       
       !---------------------------------------------------!                            
@@ -289,13 +294,35 @@
       n_min = nint((exec_time - 3600.0*n_hrs)/60.0)
       n_sec = exec_time - 3600.0*n_hrs - 60.0*n_min
 
-      
+      write(*,*) ' '
       write(*,100) 'Execution Time = ', n_hrs,' h ', &
                                         n_min,' m ', &
                                         n_sec,' s'
 100   format  (A17,I2,A3,I2,A3,F8.5,A2) 
       
       !---------------------------------------------------!
-            
+      
+      ! Choose index to evaluate Mdot     
+      j = 480
+      
+      ! Evaluate steady state log of Mdot
+      Mdot = log10(4.0*pi*rho(j)*v(j)*r(j)*r(j)*n0*mu*v0*R0*R0)
+      
+      ! Correct for the 2D approximation used
+      if (appx_mth.eq.'Rate/2 + Mdot/2') Mdot = Mdot - log10(2.0)
+      if (appx_mth.eq.'Mdot/4') Mdot = Mdot - log10(4.0)
+      
+      
+      ! Write Mdot in output
+      write(*,*) ' '
+      write(*,*) '---- Results ----'
+      write(*,*) ' '
+      write(*,*) '---> 2D approximate method: ', appx_mth
+      write(*,101) ' ---> Log10 of steady-state Mdot = ', Mdot, ' g/s'
+      
+101   format (A35,F5.2,A4)
+      
+      !---------------------------------------------------!
+      
       ! End of program
       end program Hydro_ioniz
