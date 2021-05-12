@@ -52,7 +52,7 @@ The user is asked to insert the physical parameters of the system to be simulate
 
 The code is executed by pressing the `Done` button. In the terminal, the current iteration number and the fractional variation of the momentum over the selected domain of interest, i.e.:
    
-   <img src="https://render.githubusercontent.com/render/math?math=\dfrac{\Delta \dot{M} }{\dot{M}} := \dfrac{\max\dot{M} - \min\dot{M}}{\min\dot{M}} \quad for \quad r>r_{esc}">
+   <img src="https://render.githubusercontent.com/render/math?math=\dfrac{\Delta \dot{M} }{\dot{M}} := \dfrac{\max\dot{M} - \min\dot{M}}{\min\dot{M}} \quad \text{for} \quad r>r_{esc}">
 
 For planetary simulations, as explained in << **Citation** >>, it is suggested to use the PLM reconstruction procedure when starting the simulation from general initial conditions and stop the simulation manually when <img src="https://render.githubusercontent.com/render/math?math=\Delta \dot{M}/\dot{M} \lesssim 0.5-1">. Then, restart the simulation using the previous outputs as initial condition (see below) and using the WENO3 reconstruction method instead.
 
@@ -71,7 +71,7 @@ The code writes the current output of the simulations on two file saved in the `
 8. Heating efficiency (adimensional)
 
 
-The ionization profiles are saved in the `$MAIN/output/Ion_species.txt` file. The columns of the file correspond to the number densities of HI, HII, HeI, HeII, HeIII in cm^{-3}.
+The ionization profiles are saved in the `$MAIN/output/Ion_species.txt` file. The columns of the file correspond to the number densities of HI, HII, HeI, HeII, HeIII in <img src="https://render.githubusercontent.com/render/math?math=\text{cm}^{-3}">.
 
 The post-processed profile are written on the `$MAIN/output/Hydro_ioniz_adv.txt` and `$MAIN/output/Ion_species_adv.txt` files. The data are formatted as the `$MAIN/output/Hydro_ioniz.txt` and `$MAIN/output/Ion_species.txt` files.
 
