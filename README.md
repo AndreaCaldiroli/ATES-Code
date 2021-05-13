@@ -1,6 +1,6 @@
 # The ATES code
 
-The ATES code has been created to perform hydrodynamical simulations of the atmospheric mass loss from irradiated exoplanets. For a detailed description of the code, we refer to << **Citation** >>. In the following we describe the code organization and how to run.
+The ATES code has been created to perform hydrodynamical simulations of the atmospheric mass loss from irradiated exoplanets. For a detailed description of the code, we refer to [[1]](#1) In the following we describe the code organization and how to run.
 
 
 ## Requirements
@@ -21,7 +21,7 @@ The main directory (`$MAIN`) of the code consists of the following elements:
 * the main code file `$MAIN/Hydro_ioniz.f90`;
 * the bash script `$MAIN/run_program.sh` that takes care of the compilation and the execution of the code;
 * the `$MAIN/src` directory, where all the code modules are stored.
-* the `$MAIN/python_plots.py` python3 for live plots.
+* the `$MAIN/python_plots.py` python3 for live plots. The `.dat` file with data from [[2]](#2). needs to be placed in the same folder, and the corresponding name have to be modified inside the `$MAIN/python_plots.py` file.
 
 The `$MAIN/src` directory contains three major sudirectories:
 * the `$MAIN/src/utils` folder contains the python3 files dedicated for the creatioin of the input interface;
@@ -48,13 +48,13 @@ Once exctracted, it is necessary to give execution permission to the `$MAIN/run_
     
 In order to run the code, the bash file must be executed: `.$MAIN/run_program.sh`. 
 
-The user is asked to insert the physical parameters of the system to be simulated. See << **Citation** >> for a detailed explanation of such parameters. If a system is not available in the precompiled archive (which is stored in `$MAIN/src/utils/params_table.txt`), it is possible to add it to the default list for later simulations by using the `Add planet` button. 
+The user is asked to insert the physical parameters of the system to be simulated. See [[1]](#1) for a detailed explanation of such parameters. If a system is not available in the precompiled archive (which is stored in `$MAIN/src/utils/params_table.txt`), it is possible to add it to the default list for later simulations by using the `Add planet` button. 
 
 The code is executed by pressing the `Done` button. In the terminal, the current iteration number and the fractional variation of the momentum over the selected domain of interest, i.e.:
    
    <img src="https://render.githubusercontent.com/render/math?math=\dfrac{\Delta \dot{M} }{\dot{M}} := \dfrac{\max\dot{M} - \min\dot{M}}{\min\dot{M}} \quad \text{for} \quad r>r_{esc}">
 
-For planetary simulations, as explained in << **Citation** >>, it is suggested to use the PLM reconstruction procedure when starting the simulation from general initial conditions and stop the simulation manually when <img src="https://render.githubusercontent.com/render/math?math=\Delta \dot{M}/\dot{M} \lesssim 0.5-1">. Then, restart the simulation using the previous outputs as initial condition (see below) and using the WENO3 reconstruction method instead.
+For planetary simulations, as explained in [[1]](#1), it is suggested to use the PLM reconstruction procedure when starting the simulation from general initial conditions and stop the simulation manually when <img src="https://render.githubusercontent.com/render/math?math=\Delta \dot{M}/\dot{M} \lesssim 0.5-1">. Then, restart the simulation using the previous outputs as initial condition (see below) and using the WENO3 reconstruction method instead.
 
 
 
@@ -63,7 +63,7 @@ For planetary simulations, as explained in << **Citation** >>, it is suggested t
 The code writes the current output of the simulations on two file saved in the `$MAIN/output` directory. The `$MAIN/output/Hydro_ioniz.txt` file stores the hydrodynamical variables, which are saved in column vectors in the following order:
 1. radial distance (in unit of the planetary radius)
 2. mass density (in unit of the proton mass)
-3. velocity (in unit of the scale velocity - see << **Citation** >>)
+3. velocity (in unit of the scale velocity - see [[1]](#1))
 4. pressure (in CGS units)
 5. Temperature (in Kelvin)
 6. Radiative heating rate (in CGS units)
@@ -76,3 +76,15 @@ The ionization profiles are saved in the `$MAIN/output/Ion_species.txt` file. Th
 The post-processed profile are written on the `$MAIN/output/Hydro_ioniz_adv.txt` and `$MAIN/output/Ion_species_adv.txt` files. The data are formatted as the `$MAIN/output/Hydro_ioniz.txt` and `$MAIN/output/Ion_species.txt` files.
 
 If the `Load IC` flag is active in the input window, the code automatically chooses the last saved `$MAIN/output/Hydro_ioniz.txt` and `$MAIN/output/Ion_species.txt`files in the `$MAIN/output` directory and copies them onto two new files named, by default,`$MAIN/output/Hydro_ioniz_IC.txt` and `$MAIN/output/Ion_species_IC.txt`, which are loaded by the code. For the writing/reading formats consult the `$MAIN/src/modules/file_IO/load_IC.f90` and `$MAIN/src/modules/file_IO/write_output.f90` files.
+
+
+## References
+<a id="1">[1]</a> 
+Test
+<!---
+Caldiroli, A. et al. (2021), Irradiation-driven escape of primordial planetary atmospheres I. The ATES photoionization hydrodynamics code,
+-->
+
+<a id="2">[2]</a> 
+Salz, M. et al. (2016a), Simulating the escaping atmospheres of hot gas planets in the solar neighborhood, A&A, 586, A75
+
