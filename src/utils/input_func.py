@@ -295,6 +295,10 @@ def save_func(*args):
 # Add planet to table in file
 def add_planet(*args):
       
+      # Get table path
+      cdir = os.getcwd()
+      tfile = cdir + "/src/utils/params_table.txt"
+	
       for j in glob.ent_list:
             if(len(j.get()) == 0):
                   print("Complete all fields before saving")
@@ -310,7 +314,7 @@ def add_planet(*args):
       LX = float(glob.ent_list[6].get())
       LE = float(glob.ent_list[7].get())
       
-      with open('params_table.txt', 'a') as f:
+      with open(tfile, 'a') as f:
      
             f.write(("%s\t%5.3f\t%6.3f\t"
                      "%6.1f\t%6.4f\t%5.3f\t"
