@@ -32,7 +32,7 @@
 	endif
       
             do j = 1-Ng,N+Ng
-                  write(2,2) r(j),tab,          &     ! Rad. dist.
+                  write(2,*) r(j),tab,          &     ! Rad. dist.
                              rho(j)*n0,tab,     &     ! Density
                              v(j),tab,          &     ! Velocity
                              p(j)*p0,tab,       &     ! Pressure
@@ -57,7 +57,7 @@
 	
             do j = 1-Ng,N+Ng
             
-                  write(3,3) r(j),tab,        & ! Rad. dist.
+                  write(3,*) r(j),tab,        & ! Rad. dist.
                              nhi(j)*n0,tab,   & ! HI
             	 	     nhii(j)*n0,tab,  & ! HII
             		     nhei(j)*n0,tab,  & ! HeI
