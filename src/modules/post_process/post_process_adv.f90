@@ -15,7 +15,7 @@
 	contains
 	
 	subroutine post_process_adv(rho,v,p,T_in,heat,cool,eta,   &
-                                  nhi_in,nhii_in,		          &
+                                  nhi_in,nhii_in,		    &
                                   nhei_in,nheii_in,nheiii_in)
                                   
                                   
@@ -27,7 +27,7 @@
       							  nheiii_in
 	
 	
-	integer :: N_eq    ! Numbers of equations
+	integer :: N_eq    	 ! Numbers of equations
 	integer :: lwa,lwa_T     ! Working array length
 	integer i,j,k,info
 	 
@@ -83,7 +83,8 @@
       real*8, dimension(:), allocatable :: sys_sol, sys_x
       real*8, dimension(:), allocatable :: wa
       real*8, dimension(:), allocatable :: params
-
+      real*8, dimension(12) :: paramsT
+      
 	real*8 :: rhop,rhom,vp,mum,mup,den,vm
 	real*8 :: coolm,heatm,qm
 	real*8 :: sys_sol_T, sys_x_T
@@ -137,6 +138,7 @@
       nheii  = nheii_in*n0
       nheiii = nheiii_in*n0	
       
+
 	! Free electron density (assuming overall neutrality)
 	nh  = nhi  + nhii 
 	nhe = nhei + nheii + nheiii 
@@ -165,12 +167,12 @@
       
       !---- Photoionization and photoheating ----!
 	
-	!$OMP PARALLEL DO & 
-	!$OMP SHARED ( P_HI,P_HeI,P_HeII)           &
-	!$OMP PRIVATE ( PIR_1,PIR_15,PIR_2,         &
-	!$OMP           ilo_1,ilo_15,ilo_2,ilo_f,   &
-	!$OMP           iup_1,iup_15,iup_2,iup_f,   &
-	!$OMP           elo,eup,deltal,i,j) 
+	! $OMP PARALLEL DO & 
+	! $OMP SHARED ( P_HI,P_HeI,P_HeII)           &
+	! $OMP PRIVATE ( PIR_1,PIR_15,PIR_2,         &
+	! $OMP           ilo_1,ilo_15,ilo_2,ilo_f,   &
+	! $OMP           iup_1,iup_15,iup_2,iup_f,   &
+	! $OMP           elo,eup,deltal,i,j) 
       
     
 	do j = 1-Ng,N+Ng   
@@ -233,14 +235,14 @@
 
 
       ! Multiply for the dimensional coefficient 
-      !$OMP CRITICAL
+      ! $OMP CRITICAL
       P_HI(j)   = PIR_1*1.0e-18*erg2eV	
       P_HeI(j)  = PIR_15*1.0e-18*erg2eV
 	P_HeII(j) = PIR_2*1.0e-18*erg2eV
-	!$OMP END CRITICAL
+	! $OMP END CRITICAL
       
       enddo
-	!$OMP END PARALLEL DO
+	! $OMP END PARALLEL DO
       
       
       !---- Recombination rates ----!
@@ -280,6 +282,7 @@
       ! Loop to solve the differential equation
       ! It is implicitly assumed that the velocity fields does 
       !	not change by including the advection term
+      
       
       do j = 2-Ng,N+Ng ! 
       
@@ -464,7 +467,7 @@
 	T_out = T_K/T0
 	
 	mmw = (nh + 4.0*nhe)/(nh + nhe + ne)
-	
+
 	do j = 3-Ng,N+Ng
 		
 		! Substitutions
@@ -480,18 +483,18 @@
 	 	!--- Solve equation for temperature implicitly ---!
 		
 		! Parameters
-		params(1)  = nhi(j)
-	 	params(2)  = nhii(j)
-	 	params(3)  = nhei(j)
-	 	params(4)  = nheii(j)
-	 	params(5)  = nheiii(j)
-	 	params(6)  = mmw(j)
-	 	params(7)  = mmw(j-1)
-	 	params(8)  = rhop*vp
-	 	params(9)  = mum*vp*(rhop-rhom)
-	 	params(10) = dr
-	 	params(11) = T_out(j-1)
-	 	params(12) = theat(j) 
+		paramsT(1)  = nhi(j)
+	 	paramsT(2)  = nhii(j)
+	 	paramsT(3)  = nhei(j)
+	 	paramsT(4)  = nheii(j)
+	 	paramsT(5)  = nheiii(j)
+	 	paramsT(6)  = mmw(j)
+	 	paramsT(7)  = mmw(j-1)
+	 	paramsT(8)  = rhop*vp
+	 	paramsT(9)  = mum*vp*(rhop-rhom)
+	 	paramsT(10) = dr
+	 	paramsT(11) = T_out(j-1)
+	 	paramsT(12) = theat(j) 
 	 		 	
 	 	
 	 	! Initial guess of solution
@@ -499,7 +502,7 @@
 		
 		! Call hybrd1 routine (from minpack)
 		call hybrd1(T_equation,1,sys_x_T,sys_sol_T,   &
-		            tol,info,wa_T,8,params) 
+		            tol,info,wa_T,8,paramsT) 
 		
 		
 		! Exctract solution profiles	
@@ -567,7 +570,7 @@
       ! Write updated thermodynamic and ionization profiles
       call write_output(rho,v,p_out,T_out,theat,tcool,eta,    	  &
                         nhi_w,nhii_w,nhei_w,nheii_w,nheiii_w,'ad')
-                                   
+
 
 	end subroutine post_process_adv
 	
