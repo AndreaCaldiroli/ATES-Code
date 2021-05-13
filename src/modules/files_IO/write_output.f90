@@ -32,13 +32,13 @@
 	endif
       
             do j = 1-Ng,N+Ng
-                  write(2,*) r(j),tab,          &     ! Rad. dist.
-                             rho(j)*n0,tab,     &     ! Density
-                             v(j),tab,          &     ! Velocity
-                             p(j)*p0,tab,       &     ! Pressure
-                		     T(j)*T0,tab,       &     ! Temperature
-                		     heat(j)*q0,tab,    &     ! Rad. heat.
-                		     cool(j)*q0,tab,    &     ! Rad. cool.
+                  write(2,*) r(j),          &     ! Rad. dist.
+                             rho(j)*n0,     &     ! Density
+                             v(j),          &     ! Velocity
+                             p(j)*p0,       &     ! Pressure
+                		     T(j)*T0,       &     ! Temperature
+                		     heat(j)*q0,    &     ! Rad. heat.
+                		     cool(j)*q0,    &     ! Rad. cool.
                 		     eta(j)                   ! Heat. eff.
             enddo
       close(2)
@@ -57,11 +57,11 @@
 	
             do j = 1-Ng,N+Ng
             
-                  write(3,*) r(j),tab,        & ! Rad. dist.
-                             nhi(j)*n0,tab,   & ! HI
-            	 	     nhii(j)*n0,tab,  & ! HII
-            		     nhei(j)*n0,tab,  & ! HeI
-            		     nheii(j)*n0,tab, & ! HeII
+                  write(3,*) r(j),        & ! Rad. dist.
+                             nhi(j)*n0,   & ! HI
+            	 	     nhii(j)*n0,  & ! HII
+            		     nhei(j)*n0,  & ! HeI
+            		     nheii(j)*n0, & ! HeII
              		     nheiii(j)*n0       ! HeIII
             enddo
       close(3)
