@@ -119,7 +119,6 @@ ax[1,1].semilogy(r,nheii,label = '$n_{HeII}$')
 ax[1,1].semilogy(r,nheiii,label = '$n_{HeIII}$')
 ax[1,1].set_title('Ion densities [cm$^{-3}$]', fontdict={'weight':'bold'})
 ax[1,1].set_xlim([r[0],r[-1]])
-#ax[1,1].set_ylim([1e0,2e14])
 ax[1,1].set_xlabel('r/R$_P$')
 ax[1,1].legend(loc = 'upper right')
 
