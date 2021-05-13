@@ -27,12 +27,12 @@ with open("input.inp",'r') as fi:
 
 # Hydro profiles
 r,rho,v,p,T,heat,cool,eta = \
-      np.loadtxt('./output/Hydro_ioniz_adv.txt',unpack = True)
+      np.loadtxt('./output/Hydro_ioniz.txt',unpack = True)
 rho = rho*mu
 
 # Load our ionization profiles
 r,nhi,nhii,nhei,nheii,nheiii = \
-      np.loadtxt('./output/Ion_species_adv.txt',unpack = True)
+      np.loadtxt('./output/Ion_species.txt',unpack = True)
 
 
 #--------------------------------------------------
