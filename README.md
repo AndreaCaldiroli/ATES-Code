@@ -12,7 +12,7 @@ A basic installation of `python3` is required. The following libraries are used:
 
 The code doesn't require any special installation, and can be directly downloaded from the Github page or, in alternative, the repository can be cloned via 
 
-    git clone https://github.com/AndreaCaldiroli/ExoCode2021
+    git clone https://github.com/AndreaCaldiroli/ATES-Code
 
     
 ## Directories and files
