@@ -303,7 +303,7 @@
       !---------------------------------------------------!
       
       ! Choose index to evaluate Mdot     
-      j = 480
+      j = N - 20
       
       ! Evaluate steady state log of Mdot
       Mdot = log10(4.0*pi*rho(j)*v(j)*r(j)*r(j)*n0*mu*v0*R0*R0)
