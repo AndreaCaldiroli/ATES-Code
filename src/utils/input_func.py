@@ -258,7 +258,7 @@ def save_func(*args):
             with open('input.inp', 'w') as f:
                       
                   f.write(("%s\n%s\n%s\n%s\n"
-                           "%7.1E\n%5.3f\n%5.3f\n"
+                           "%5.2f\n%5.3f\n%5.3f\n"
                            "%6.1f\n%6.4f\n%5.3f\n"
                            "%6.3f\n%6.3f\n"
                            "%4.1f\n%8.6f\n%s\n"
