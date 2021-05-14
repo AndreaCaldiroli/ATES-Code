@@ -82,7 +82,7 @@
 
       real*8, dimension(:), allocatable :: sys_sol, sys_x
       real*8, dimension(:), allocatable :: wa
-      real*8, dimension(:), allocatable :: params
+      real*8, dimension(14) :: params
       real*8, dimension(12) :: paramsT
       
 	real*8 :: rhop,rhom,vp,mum,mup,den,vm
@@ -97,12 +97,10 @@
       if (HeH.gt.(0.0)) then   
               
             N_eq = 3
-            allocate (params(14))
-            
+	    
       else
             
             N_eq = 1
-            allocate (params(6))
             
       endif
       
