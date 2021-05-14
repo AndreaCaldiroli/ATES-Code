@@ -87,7 +87,7 @@
       
 	real*8 :: rhop,rhom,vp,mum,mup,den,vm
 	real*8 :: coolm,heatm,qm
-	real*8 :: sys_sol_T, sys_x_T
+	real*8 :: sys_sol_T(1), sys_x_T(1)
       real*8 :: wa_T(8)
       
       
@@ -496,7 +496,7 @@
 	 		 	
 	 	
 	 	! Initial guess of solution
-		sys_x_T = T_out(j) 
+		sys_x_T(1) = T_out(j) 
 		
 		! Call hybrd1 routine (from minpack)
 		call hybrd1(T_equation,1,sys_x_T,sys_sol_T,   &
@@ -504,7 +504,7 @@
 		
 		
 		! Exctract solution profiles	
-		T_out(j) = sys_x_T 	
+		T_out(j) = sys_x_T(1) 	
 	 	
 	enddo
 	
