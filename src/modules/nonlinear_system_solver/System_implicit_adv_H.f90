@@ -18,7 +18,7 @@
 	real*8  :: n_h
 	real*8  :: ahii
 	real*8  :: ionhi
-      real*8  :: params(6)
+      real*8  :: params(14)
 	
 	
 	! Coefficients of the system
