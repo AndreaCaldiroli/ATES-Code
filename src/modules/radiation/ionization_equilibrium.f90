@@ -63,13 +63,15 @@
 
       real*8, dimension(:), allocatable :: sys_sol, sys_x
       real*8, dimension(:), allocatable :: wa
-      real*8, dimension(:), allocatable :: params
+      real*8, dimension(14) :: params
       
       
       ! Output density
       real*8, dimension(1-Ng:N+Ng),intent(out) :: n_out 
+      
       ! Output heating,cooling and absorbed energy 
       real*8, dimension(1-Ng:N+Ng),intent(out) :: heat_out,cool_out,q 
+      
       ! Output species fractions          
       real*8, dimension(1-Ng:N+Ng,5),intent(out) :: f_sp_out
 
@@ -80,12 +82,10 @@
       if (HeH.gt.(0.0)) then   
               
             N_eq = 3
-            allocate (params(11))
             
       else
             
             N_eq = 1
-            allocate (params(4))
             
       endif
       
