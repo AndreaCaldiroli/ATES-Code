@@ -21,7 +21,7 @@ The main directory (`$MAIN`) of the code consists of the following elements:
 * the main code file `$MAIN/Hydro_ioniz.f90`;
 * the bash script `$MAIN/run_program.sh` that takes care of the compilation and the execution of the code;
 * the `$MAIN/src` directory, where all the code modules are stored.
-* the `$MAIN/python_plots.py` python3 for live plots. The `.dat` file with data from [[2]](#2). needs to be placed in the same folder, and the corresponding name have to be modified inside the `$MAIN/python_plots.py` file.
+* the `$MAIN/python_plots.py` python3 for live plots.
 
 The `$MAIN/src` directory contains three major sudirectories:
 * the `$MAIN/src/utils` folder contains the python3 files dedicated for the creatioin of the input interface;
@@ -84,7 +84,4 @@ Test
 <!---
 Caldiroli, A. et al. (2021), Irradiation-driven escape of primordial planetary atmospheres I. The ATES photoionization hydrodynamics code,
 -->
-
-<a id="2">[2]</a> 
-Salz, M. et al. (2016a), Simulating the escaping atmospheres of hot gas planets in the solar neighborhood, A&A, 586, A75
 
