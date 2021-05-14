@@ -89,7 +89,7 @@
             
       endif
       
-      lwa  = (n*(3*n+13))/2
+      lwa  = (N_eq*(3*N_eq+13))/2
       allocate (sys_sol(N_eq))
       allocate (sys_x(N_eq))
       allocate (wa(lwa))
