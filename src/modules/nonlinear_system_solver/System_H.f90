@@ -14,7 +14,7 @@
 	real*8  :: g_hi                   ! Photoionization rates
 	real*8  :: b_hi                   ! Collisional ionization rates
 	real*8  :: a_hii                  ! Recombination rates
-      real*8  :: params(4)
+      real*8  :: params(14)
 	real*8  :: n_h,n_e
 	real*8  :: n_hi,n_hii
 	
