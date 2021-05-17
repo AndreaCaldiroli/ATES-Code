@@ -441,6 +441,9 @@
       ! Adimensional heating and cooling rates
       heat_out = heat/q0
       cool_out = cool/q0
+      
+      ! Adjust value of pressure bounday condition
+      dp_bc = (nhii(1-Ng) + nheii(1-Ng) + 2.0*nheiii(1-Ng))/n0
 	 
 	end subroutine ioniz_eq
 	
