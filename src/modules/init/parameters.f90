@@ -66,6 +66,7 @@
       real*8  ::  rho1        ! Adimensional number density at origin
       real*8  ::  a_tau       ! Rate correction coefficient
       real*8  ::  PLind		! Index of spectral power law
+      real*8  ::  dp_bc		! Boundaty condition for pressure
       
       !------- Normalizations -------!
 
