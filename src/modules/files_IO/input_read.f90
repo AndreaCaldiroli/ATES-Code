@@ -60,13 +60,13 @@
             
       !------ Normalization constants ------!
       
-      rho1 = (1.0 + 4.0*HeH)/(1.0 + HeH)
-      v0   = sqrt(kb_erg*T0/mu)       
-      t_s  = R0/v0                    
-      p0   = n0*mu*v0*v0              
-      q0   = n0*mu*v0*v0*v0/R0	      
-      b0   = (Gc*Mp*mu)/(kb_erg*T0*R0)       
-       
+      rho1  = (1.0 + 4.0*HeH)/(1.0 + HeH)
+      v0    = sqrt(kb_erg*T0/mu)       
+      t_s   = R0/v0                    
+      p0    = n0*mu*v0*v0              
+      q0    = n0*mu*v0*v0*v0/R0	      
+      b0    = (Gc*Mp*mu)/(kb_erg*T0*R0)       
+      dp_bc = 1.0e-10
        
       !------ Reading format specification ------!
 200   format (A15)
