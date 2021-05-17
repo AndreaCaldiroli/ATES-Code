@@ -48,7 +48,7 @@
             W_out(1-k,1) = rho1
             W_out(1-k,2) = W_out(1,2)
             if(W_out(1,2).le.(0.0)) W_out(1-k,2) = 0.0
-            W_out(1-k,3) = 1.0 + 1.0e-10
+            W_out(1-k,3) = 1.0 + dp_bc
 
             ! Upper boundary
             W_out(N+k,:) = W_out(N,:)
@@ -77,12 +77,12 @@
       WR_out(-1,1) = (1.0 + 4.0*HeH)/(1.0 + HeH)
       WR_out(-1,2) = WR_out(0,2)
       if(WR_out(1,2).le.(0.0)) WR_out(-1,2) = 0.0
-      WR_out(-1,3) = 1.0 + 1.0e-10
+      WR_out(-1,3) = 1.0 + dp_bc
       
       WL_out(-1:0,1) = (1.0 + 4.0*HeH)/(1.0 + HeH)
       WL_out(-1:0,2) = WL_out(1,2)
       if(WL_out(1,2).le.(0.0)) WL_out(-1:0,2) = 0.0
-      WL_out(-1:0,3) = 1.0 + 1.0e-10
+      WL_out(-1:0,3) = 1.0 + dp_bc
       
       
       ! Upper boundary
