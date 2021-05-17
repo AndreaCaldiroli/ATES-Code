@@ -26,15 +26,15 @@
       W(:,2) = 0.5*(r-r(0))
       
       ! Pressure
-      W(:,3) = (1.0 + 1.0d-10)*W(:,1)/rho1
+      W(:,3) = (1.0 + dp_bc)*W(:,1)/rho1
       
       ! Temperature
       T = 1.0
 
       ! Ionized fractions      
-      f_sp(:,1) = (1.0 - 1.0d-10)/(1.0 + 4.0*HeH)		!HI
-      f_sp(:,2) = 1.0d-10/(1.0 + 4.0*HeH)	                  !HII
-      f_sp(:,3) = HeH*(1.0 - 1.0d-10)/(1.0 + 4.0*HeH)	      !HeI
+      f_sp(:,1) = (1.0 - dp_bc)/(1.0 + 4.0*HeH)		!HI
+      f_sp(:,2) = dp_bc/(1.0 + 4.0*HeH)	                  !HII
+      f_sp(:,3) = HeH*(1.0 - dp_bc)/(1.0 + 4.0*HeH)	      !HeI
       f_sp(:,4) = 1.0d-10*HeH/(1.0 + 4.0*HeH)	            !HeII
       f_sp(:,5) = 0.0					            !HeIII
       
