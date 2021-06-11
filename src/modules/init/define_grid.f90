@@ -38,7 +38,7 @@
 	    
       case ('Mixed') 
       
-            !------ Salz's grid ------!
+            !------ Mixed grid ------!
             ! Constructed with N_low uniform spaced points
             ! and N_up points in a stretched grid
             
