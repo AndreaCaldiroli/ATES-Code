@@ -78,8 +78,16 @@ echo "
 ------- STARTING SIMULATION -------
 "
 
+# Define compiler string
+if [[ $1 = "--ifort" ]]; then	
+	comp_str="ifort -module "$DIR_MOD" -qopenmp -no-wrap-margin"
+else
+	comp_str="gfortran -J"$DIR_MOD" -I"$DIR_MOD" -fopenmp -g -fbacktrace"
+fi
+
+
 # Define string with order of compilation
-str=" gfortran -J"$DIR_MOD" -I"$DIR_MOD" -fopenmp -g -fbacktrace \
+str=" $comp_str \
       $DIR_INIT/parameters.f90\
       $DIR_FILES/input_read.f90\
       $DIR_FILES/load_IC.f90\
