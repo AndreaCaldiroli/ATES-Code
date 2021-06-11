@@ -290,8 +290,8 @@
       
       ! Write final execution time
       exec_time = finish - start
-      n_hrs = nint(exec_time/3600.0)
-      n_min = nint((exec_time - 3600.0*n_hrs)/60.0)
+      n_hrs = floor(exec_time/3600.0)
+      n_min = floor((exec_time - 3600.0*n_hrs)/60.0)
       n_sec = exec_time - 3600.0*n_hrs - 60.0*n_min
 
       write(*,*) ' '
