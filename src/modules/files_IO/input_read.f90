@@ -33,10 +33,10 @@
             read(1,600) LEUV
             read(1,800) r_esc
             read(1,901) HeH
-            read(1,200) ans_IC
+            read(1, * ) ans_IC
             read(1,200) appx_mth_inp
             read(1,600) a_tau
-            read(1,900) PLind
+            read(1, * ) PLind
       close(1)
 
 
@@ -70,7 +70,7 @@
        
       !------ Reading format specification ------!
 200   format (A15)
-300   format (E7.1)
+300   format (F5.2)
 400   format (F5.3)
 500   format (F6.1)    
 600   format (F6.3)
