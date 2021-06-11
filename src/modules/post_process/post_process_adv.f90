@@ -163,15 +163,7 @@
 
       !----------------------------------!
       
-      !---- Photoionization and photoheating ----!
-	
-	! $OMP PARALLEL DO & 
-	! $OMP SHARED ( P_HI,P_HeI,P_HeII)           &
-	! $OMP PRIVATE ( PIR_1,PIR_15,PIR_2,         &
-	! $OMP           ilo_1,ilo_15,ilo_2,ilo_f,   &
-	! $OMP           iup_1,iup_15,iup_2,iup_f,   &
-	! $OMP           elo,eup,deltal,i,j) 
-      
+      !---- Photoionization and photoheating ----!      
     
 	do j = 1-Ng,N+Ng   
 
@@ -233,14 +225,11 @@
 
 
       ! Multiply for the dimensional coefficient 
-      ! $OMP CRITICAL
       P_HI(j)   = PIR_1*1.0e-18*erg2eV	
       P_HeI(j)  = PIR_15*1.0e-18*erg2eV
 	P_HeII(j) = PIR_2*1.0e-18*erg2eV
-	! $OMP END CRITICAL
       
       enddo
-	! $OMP END PARALLEL DO
       
       
       !---- Recombination rates ----!
