@@ -5,7 +5,7 @@ The ATES code has been created to perform hydrodynamical simulations of the atmo
 
 ## Requirements
 
-The code is compiled with the `gfortran` compiler, and has been tested successfully in version 9.3.0. 
+The code can be compiled with both `gfortran` (tested successfully in version 9.3.0) and `ifort` (tested on the 2021.2.0 20210228 version). For the compiler choice, see below.
 A basic installation of `python3` is required. The following libraries are used: `numpy,tkinter,os,shutil,matplotlib`.
 
 ## Installation
@@ -46,7 +46,13 @@ Once exctracted, it is necessary to give execution permission to the `$MAIN/run_
 
     chmod +x $MAIN/run_program.sh
     
-In order to run the code, the bash file must be executed: `.$MAIN/run_program.sh`. 
+In order to run the code, the bash file must be executed. By default, ATES is compiled with gfortran. In the terminal, it is sufficient to execute:
+   
+    .$MAIN/run_program.sh
+
+To force the use of the `ifort` compiler, run the following command:
+
+    .$MAIN/run_program.sh --ifort
 
 The user is asked to insert the physical parameters of the system to be simulated. See [[1]](#1) for a detailed explanation of such parameters. If a system is not available in the precompiled archive (which is stored in `$MAIN/src/utils/params_table.txt`), it is possible to add it to the default list for later simulations by using the `Add planet` button. 
 
