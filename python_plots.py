@@ -42,6 +42,9 @@ r,nhi,nhii,nhei,nheii,nheiii = \
 T0 = T[0]                 # Surface temperature
 v0 = np.sqrt(kb*T0/mu)    # Scale velocity
 N  = r.size               # Number of cells
+vlim = 1.2*v.max()*v0*1e-5
+if v.max() < 0 :
+	vlim = 15.0
 
 # Internal energy
 Eint = p[:]/(gam -1.0)
@@ -92,7 +95,7 @@ ax[0,0].set_xlabel('r/R$_P$')
 # Velocity
 ax[0,1].semilogy(r,v*v0*1e-5)
 ax[0,1].set_xlim([r[0],r[-1]])
-ax[0,1].set_ylim([1.e-3,15.0])
+ax[0,1].set_ylim([1.e-3,vlim])
 ax[0,1].set_title('Velocity [km s$^{-1}$]', fontdict={'weight':'bold'})
 ax[0,1].set_xlabel('r/R$_P$')
 
@@ -206,7 +209,7 @@ if os.path.isfile(adv_hydro ) and os.path.isfile(adv_ioniz):
 	# Velocity
 	ax[0,1].semilogy(r,v*v0*1e-5)
 	ax[0,1].set_xlim([r[0],r[-1]])
-	ax[0,1].set_ylim([1.e-3,15.0])
+	ax[0,1].set_ylim([1.e-3,vlim])
 	ax[0,1].set_title('Velocity [km s$^{-1}$]', fontdict={'weight':'bold'})
 	ax[0,1].set_xlabel('r/R$_P$')
 
