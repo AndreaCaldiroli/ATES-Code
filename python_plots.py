@@ -61,7 +61,12 @@ fheiii = nheiii[:]/nhe[:]   # HeIII fraction
 
 # Spherical momentum
 mom   = 4.*np.pi*v[:]*rho[:]*r[:]**2.*v0*R0**2.            
-lgmom = np.where(mom < 0, -20, np.log10(mom))
+lgmom = np.zeros(N)           
+for j in range(N):
+	if mom[j] > 0:
+		lgmom[j] = np.log10(mom[j])
+	else:
+		lgmom[j] = -20.0	
 
 # Correct mass flux for the current 3D approximation method
 mom_out = lgmom[-20]
