@@ -61,11 +61,11 @@ mom   = 4.*np.pi*v[:]*rho[:]*r[:]**2.*v0*R0**2.
 lgmom = np.where(mom < 0, -20, np.log10(mom))
 
 # Correct mass flux for the current 3D approximation method
-mom_out = mom[-20]
+mom_out = lgmom[-20]
 if appx_mth.strip() == "Rate/2 + Mdot/2":
-	mom_out = 0.5*mom[-20]
+	mom_out = lgmom[-20] + np.log10[0.5]
 if appx_mth.strip() == "Mdot/4":
-	mom_out = 0.25*mom[-20]
+	mom_out = lgmom[-20] + np.log10[0.25]
 
 
 #----------------------------------------------------#
@@ -182,17 +182,6 @@ if os.path.isfile(adv_hydro ) and os.path.isfile(adv_ioniz):
 	fheii  = nheii[:]/nhe[:]    # HeII fraction
 	fheiii = nheiii[:]/nhe[:]   # HeIII fraction
 
-	# Spherical momentum
-	mom   = 4.*np.pi*v[:]*rho[:]*r[:]**2.*v0*R0**2.            
-
-	# Correct mass flux for the current 3D approximation method
-	mom_out = mom[-20]
-	if appx_mth.strip() == "Rate/2 + Mdot/2":
-		mom_out = 0.5*mom[-20]
-	if appx_mth.strip() == "Mdot/4":
-		mom_out = 0.25*mom[-20]
-
-
 	#----------------------------------------------------#
 
 	#------- Hydro plot -------#
@@ -276,7 +265,7 @@ if os.path.isfile(adv_hydro ) and os.path.isfile(adv_ioniz):
 
 # Print the mass loss rate
 print("2D approximation method: ", appx_mth.strip())
-print("Log10 of mass-loss-rate = ", np.log10(mom_out))
+print("Log10 of mass-loss-rate = ", mom_out)
 
 plt.show()
 
