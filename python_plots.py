@@ -58,6 +58,7 @@ fheiii = nheiii[:]/nhe[:]   # HeIII fraction
 
 # Spherical momentum
 mom   = 4.*np.pi*v[:]*rho[:]*r[:]**2.*v0*R0**2.            
+lgmom = np.where(mom < 0, -20, np.log10(mom))
 
 # Correct mass flux for the current 3D approximation method
 mom_out = mom[-20]
@@ -108,7 +109,7 @@ ax[0,3].set_title('Temperature [K]', fontdict={'weight':'bold'})
 ax[0,3].set_xlabel('r/R$_P$')
 
 # Momentum
-ax[1,0].plot(r,np.log10(mom))
+ax[1,0].plot(r,lgmom)
 ax[1,0].set_xlim([r[0],r[-1]])
 ax[1,0].set_title('Log10 Momentum [g s$^{-1}$]', fontdict={'weight':'bold'})
 ax[1,0].set_xlabel('r/R$_P$')
@@ -233,7 +234,7 @@ if os.path.isfile(adv_hydro ) and os.path.isfile(adv_ioniz):
 	ax[0,3].set_xlabel('r/R$_P$')
 
 	# Momentum
-	ax[1,0].plot(r,np.log10(mom))
+	ax[1,0].plot(r,lgmom)
 	ax[1,0].set_xlim([r[0],r[-1]])
 	ax[1,0].set_title('Log10 Momentum [g s$^{-1}$]', fontdict={'weight':'bold'})
 	ax[1,0].set_xlabel('r/R$_P$')
