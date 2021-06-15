@@ -63,9 +63,9 @@ lgmom = np.where(mom < 0, -20, np.log10(mom))
 # Correct mass flux for the current 3D approximation method
 mom_out = lgmom[-20]
 if appx_mth.strip() == "Rate/2 + Mdot/2":
-	mom_out = lgmom[-20] + np.log10[0.5]
+	mom_out = mom_out + np.log10(0.5)
 if appx_mth.strip() == "Mdot/4":
-	mom_out = lgmom[-20] + np.log10[0.25]
+	mom_out = mom_out + np.log10(0.25)
 
 
 #----------------------------------------------------#
