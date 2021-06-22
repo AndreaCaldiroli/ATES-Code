@@ -86,7 +86,7 @@ fig.set_size_inches(11, 7)
 fig.subplots_adjust(left   = 0.05,
                     bottom = 0.08,
                     right  = 0.97,
-                    top    = 0.89,
+                    top    = 0.93,
                     hspace = 0.30,
                     wspace = 0.31)  
 
