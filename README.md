@@ -86,8 +86,6 @@ If the `Load IC` flag is active in the input window, the code automatically choo
 
 ## References
 <a id="1">[1]</a> 
-Test
-<!---
-Caldiroli, A. et al. (2021), Irradiation-driven escape of primordial planetary atmospheres I. The ATES photoionization hydrodynamics code,
--->
+Caldiroli, A., Haardt, F., Gallo, E., Spinelli, R., Malsky, I., Rauscher, E., 2021, "Irradiation-driven escape of primordial planetary atmospheres I. The ATES photoionization hydrodynamics code", arXiv:2106.10294
+
 
