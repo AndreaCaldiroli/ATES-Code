@@ -121,6 +121,7 @@ ax[1,0].plot(r,lgmom)
 ax[1,0].set_xlim([r[0],r[-1]])
 ax[1,0].set_title('Log10 Momentum [g s$^{-1}$]', fontdict={'weight':'bold'})
 ax[1,0].set_xlabel('r/R$_P$')
+ax[1,0].set_ylim([7,13])
 
 # Ionization densities
 ax[1,1].semilogy(r,nhi,label = '$n_{HI}$')
@@ -235,6 +236,7 @@ if os.path.isfile(adv_hydro ) and os.path.isfile(adv_ioniz):
 	ax[1,0].set_xlim([r[0],r[-1]])
 	ax[1,0].set_title('Log10 Momentum [g s$^{-1}$]', fontdict={'weight':'bold'})
 	ax[1,0].set_xlabel('r/R$_P$')
+	ax[1,0].set_ylim([7,13])
 
 	# Ionization densities
 	ax[1,1].semilogy(r,nhi,label = '$n_{HI}$')
