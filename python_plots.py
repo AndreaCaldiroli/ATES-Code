@@ -68,6 +68,10 @@ for j in range(N):
 	else:
 		lgmom[j] = -20.0	
 
+# Minimum for momentum plot
+mom_inf = lgmom.min()
+if mom_inf == -20: mom_inf = 0.8*lgmom[200]
+	
 # Correct mass flux for the current 3D approximation method
 mom_out = lgmom[-20]
 if appx_mth.strip() == "Rate/2 + Mdot/2":
@@ -81,7 +85,6 @@ if appx_mth.strip() == "Mdot/4":
 #------- Hydro plot -------#
 
 fig, ax = plt.subplots(2,4)
-plt.suptitle('Before post-processing',fontsize = 15,fontweight = 'bold')
 fig.set_size_inches(11, 7)
 fig.subplots_adjust(left   = 0.05,
                     bottom = 0.08,
@@ -121,7 +124,7 @@ ax[1,0].plot(r,lgmom)
 ax[1,0].set_xlim([r[0],r[-1]])
 ax[1,0].set_title('Log10 Momentum [g s$^{-1}$]', fontdict={'weight':'bold'})
 ax[1,0].set_xlabel('r/R$_P$')
-ax[1,0].set_ylim([7,13])
+ax[1,0].set_ylim([mom_inf, 1.2*lgmom.max()])
 
 # Ionization densities
 ax[1,1].semilogy(r,nhi,label = '$n_{HI}$')
