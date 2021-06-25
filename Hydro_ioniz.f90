@@ -226,6 +226,9 @@
  	      		
 		! Evaluate momentum
 		mom = rho*v*r*r
+		
+	 	! Update value of veloocity at boundary
+		v_bc = sum(mom(j_min:N))/(1.0*(N-j_min+1))
 		            
             !---------------------------------------------------!
         
