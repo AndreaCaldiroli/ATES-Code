@@ -384,6 +384,7 @@ glob.ent_list[1].bind("<Any-KeyRelease>", upd_labels)
 glob.ent_list[2].bind("<Any-KeyRelease>", upd_labels)
 glob.ent_list[3].bind("<Any-KeyRelease>", upd_labels)
 glob.ent_list[4].bind("<Any-KeyRelease>", upd_labels)
+glob.ent_list[4].bind("<Any-KeyRelease>", fc.upd_F)
 glob.ent_list[5].bind("<Any-KeyRelease>", upd_labels)
 glob.ent_list[6].bind("<Any-KeyRelease>", fc.upd_F)   # LX
 glob.ent_list[7].bind("<Any-KeyRelease>", fc.upd_F)   # LEUV
