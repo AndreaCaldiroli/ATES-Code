@@ -47,7 +47,10 @@ def upd_F(*args):
       if(len(a_str) == 0):
             FXUV = ''
       else:
-            FXUV = (10.0**LX + 10.0**LEUV)/(4.0*np.pi*a*a*AU*AU)
+            if (a == 0):
+                  FXUV = 'a must be positive'
+            else:
+                  FXUV = (10.0**LX + 10.0**LEUV)/(4.0*np.pi*a*a*AU*AU)
       
       # Delete current FXUV before updating
       glob.ent_list[8].delete(0,'end')
