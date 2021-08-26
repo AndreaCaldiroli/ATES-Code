@@ -1,6 +1,13 @@
 import numpy as np
 import os
 import matplotlib.pyplot as plt
+import time
+import sys
+
+# Parse options for animated plots
+if len(sys.argv) == 1: animate = 'False'
+if len(sys.argv) == 2: animate = 'True'; sec = 4
+if len(sys.argv) == 3: animate = 'True'; sec = float(sys.argv[2])
 
 
 # Phisical constants
@@ -94,44 +101,44 @@ fig.subplots_adjust(left   = 0.05,
                     wspace = 0.31)  
 
 # Density
-ax[0,0].semilogy(r,rho)
+rho_line, = ax[0,0].semilogy(r,rho)
 ax[0,0].set_xlim([r[0],r[-1]])
 ax[0,0].set_title('Density [g cm$^{-3}$]', fontdict={'weight':'bold'})
 ax[0,0].set_xlabel('r/R$_P$')
 
 
 # Velocity
-ax[0,1].semilogy(r,v*v0*1e-5)
+v_line, = ax[0,1].semilogy(r,v*v0*1e-5)
 ax[0,1].set_xlim([r[0],r[-1]])
 ax[0,1].set_ylim([1.e-3,vlim])
 ax[0,1].set_title('Velocity [km s$^{-1}$]', fontdict={'weight':'bold'})
 ax[0,1].set_xlabel('r/R$_P$')
 
 # Pressure
-ax[0,2].semilogy(r,p)
+p_line, = ax[0,2].semilogy(r,p)
 ax[0,2].set_xlim([r[0],r[-1]])
 ax[0,2].set_title('Pressure [erg cm$^{-3}$]', fontdict={'weight':'bold'})
 ax[0,2].set_xlabel('r/R$_P$')
 
 # Temperature
-ax[0,3].plot(r,T)
+T_line, = ax[0,3].plot(r,T)
 ax[0,3].set_xlim([r[0],r[-1]])
 ax[0,3].set_title('Temperature [K]', fontdict={'weight':'bold'})
 ax[0,3].set_xlabel('r/R$_P$')
 
 # Momentum
-ax[1,0].plot(r,lgmom)
+mom_line, = ax[1,0].plot(r,lgmom)
 ax[1,0].set_xlim([r[0],r[-1]])
 ax[1,0].set_title('Log10 Momentum [g s$^{-1}$]', fontdict={'weight':'bold'})
 ax[1,0].set_xlabel('r/R$_P$')
 ax[1,0].set_ylim([mom_inf, 1.2*lgmom.max()])
 
 # Ionization densities
-ax[1,1].semilogy(r,nhi,label = '$n_{HI}$')
-ax[1,1].semilogy(r,nhii,label = '$n_{HII}$')
-ax[1,1].semilogy(r,nhei,label = '$n_{HeI}$')
-ax[1,1].semilogy(r,nheii,label = '$n_{HeII}$')
-ax[1,1].semilogy(r,nheiii,label = '$n_{HeIII}$')
+nhi_line,    = ax[1,1].semilogy(r,nhi,label = '$n_{HI}$')
+nhii_line,   = ax[1,1].semilogy(r,nhii,label = '$n_{HII}$')
+nhei_line,   = ax[1,1].semilogy(r,nhei,label = '$n_{HeI}$')
+nheii_line,  = ax[1,1].semilogy(r,nheii,label = '$n_{HeII}$')
+nheiii_line, = ax[1,1].semilogy(r,nheiii,label = '$n_{HeIII}$')
 ax[1,1].set_title('Ion densities [cm$^{-3}$]', fontdict={'weight':'bold'})
 ax[1,1].set_xlim([r[0],r[-1]])
 ax[1,1].set_xlabel('r/R$_P$')
@@ -139,8 +146,8 @@ ax[1,1].legend(loc = 'upper right')
 
 
 # H fractions
-ax[1,2].plot(r,fhi,label = '$f_{HI}$')
-ax[1,2].plot(r,fhii,label = '$f_{HII}$')
+fhi_line,  = ax[1,2].plot(r,fhi,label = '$f_{HI}$')
+fhii_line, = ax[1,2].plot(r,fhii,label = '$f_{HII}$')
 ax[1,2].set_title('H fractions', fontdict={'weight':'bold'})
 ax[1,2].set_xlim([r[0],r[-1]])
 ax[1,2].set_ylim([0,1])
@@ -148,9 +155,9 @@ ax[1,2].set_xlabel('r/R$_P$')
 ax[1,2].legend(loc = 'best')
 
 # He fractions
-ax[1,3].plot(r,fhei,label = '$f_{HeI}$')
-ax[1,3].plot(r,fheii,label = '$f_{HeII}$')
-ax[1,3].plot(r,fheiii,label = '$f_{HeIII}$')
+fhei_line,   = ax[1,3].plot(r,fhei,label = '$f_{HeI}$')
+fheii_line,  = ax[1,3].plot(r,fheii,label = '$f_{HeII}$')
+fheiii_line, = ax[1,3].plot(r,fheiii,label = '$f_{HeIII}$')
 ax[1,3].set_title('He fractions', fontdict={'weight':'bold'})
 ax[1,3].set_xlim([r[0],r[-1]])
 ax[1,3].set_ylim([0,1])
@@ -220,12 +227,87 @@ if os.path.isfile(adv_hydro ) and os.path.isfile(adv_ioniz):
 	ax[1,3].plot(r,fheiii,'--',label = '$f_{HeIII}$',color = '#2ca02c')
 
 
-
-
-
 # Print the mass loss rate
 print("2D approximation method: ", appx_mth.strip())
 print("Log10 of mass-loss-rate = ", mom_out)
 
-plt.show()
+if animate == 'False':
+	plt.show()
+else:
+	plt.show(block = False)
+
+#----------------------------------------------------#
+
+
+# Update plot every 5 seconds if --live option is set
+if animate == 'True':
+	k = 1
+	while k > 0:
+
+		# Hydro profiles
+		r,rho,v,p,T,heat,cool,eta = \
+			np.loadtxt('./output/Hydro_ioniz.txt',unpack = True)
+		rho = rho*mu
+
+		# Load our ionization profiles
+		r,nhi,nhii,nhei,nheii,nheiii = \
+			np.loadtxt('./output/Ion_species.txt',unpack = True)
+
+		# Spherical momentum
+		mom   = 4.*np.pi*v[:]*rho[:]*r[:]**2.*v0*R0**2.            
+		lgmom = np.zeros(N)           
+		for j in range(N):
+			if mom[j] > 0:
+				lgmom[j] = np.log10(mom[j])
+			else:
+				lgmom[j] = -20.0	
+				
+		# Ion densities and fractions
+		nh  = nhi[:] + nhii[:]                    # Total hydrogen density
+		nhe = nhei[:] + nheii[:] + nheiii[:]      # Total helium density
+		ne  = nhii[:] + nheii[:] + 2.*nheiii[:]   # Free electron density
+		fhi    = nhi[:]/nh[:]       			# HI fraction
+		fhii   = nhii[:]/nh[:]      			# HII fraction
+		fhei   = nhei[:]/nhe[:]     			# HeI fraction
+		fheii  = nheii[:]/nhe[:]    			# HeII fraction
+		fheiii = nheiii[:]/nhe[:]   			# HeIII fraction
+
+		# Update data for plot
+		rho_line.set_ydata(rho) 
+		v_line.set_ydata(v*v0*1e-5)
+		p_line.set_ydata(p)
+		T_line.set_ydata(T)
+		mom_line.set_ydata(lgmom)
+		nhi_line.set_ydata(nhi)
+		nhii_line.set_ydata(nhii)
+		nhei_line.set_ydata(nhei)
+		nheii_line.set_ydata(nheii)
+		nheiii_line.set_ydata(nheiii)
+		fhi_line.set_ydata(fhi)
+		fhii_line.set_ydata(fhii)
+		fhei_line.set_ydata(fhei)
+		fheii_line.set_ydata(fheii)
+		fheiii_line.set_ydata(fheiii)
+		
+		# Update axis limits
+		
+		vlim = 1.2*v.max()*v0*1e-5
+		if v.max() < 0 :
+			vlim = 15.0
+		
+		# Minimum for momentum plot
+		mom_inf = lgmom.min()
+		if mom_inf == -20: mom_inf = 0.8*lgmom[200]
+		ax[0,1].set_ylim([1.e-3,vlim])
+		ax[0,3].set_ylim(0.8*T.min(),1.2*T.max())
+		ax[1,0].set_ylim([mom_inf, 1.2*lgmom.max()])
+		
+		fig.canvas.draw()
+		fig.canvas.flush_events()
+		
+		# Wait 5 seconds before next update
+		time.sleep(sec)
+		k = k + 1
+	
+	 
 
