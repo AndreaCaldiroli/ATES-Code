@@ -6,7 +6,7 @@ The ATES code has been created to perform hydrodynamical simulations of the atmo
 ## Requirements
 
 The code can be compiled with both `gfortran` (tested successfully in version 9.3.0) and `ifort` (tested on the 2021.2.0 20210228 version). For the compiler choice, see below.
-A basic installation of `python3` is required. The following libraries are used: `numpy,tkinter,os,shutil,matplotlib`.
+A basic installation of `python3` is required. The following libraries are used: `numpy,tkinter,os,shutil,matplotlib,sys,time`.
 
 ## Installation
 
