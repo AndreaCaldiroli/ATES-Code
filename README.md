@@ -83,6 +83,14 @@ The post-processed profile are written on the `$MAIN/output/Hydro_ioniz_adv.txt`
 
 If the `Load IC` flag is active in the input window, the code automatically chooses the last saved `$MAIN/output/Hydro_ioniz.txt` and `$MAIN/output/Ion_species.txt`files in the `$MAIN/output` directory and copies them onto two new files named, by default,`$MAIN/output/Hydro_ioniz_IC.txt` and `$MAIN/output/Ion_species_IC.txt`, which are loaded by the code. For the writing/reading formats consult the `$MAIN/src/modules/file_IO/load_IC.f90` and `$MAIN/src/modules/file_IO/write_output.f90` files.
 
+## Plotting results
+
+The `$MAIN/python_plots.py` file can be used to plot the current status of the simulation or to follow the evolution of the profiles with a live animation. The script can be executed with the following syntax:
+
+    python3 $MAIN/python_plots.py _--live n_
+    
+The `--live n` arguments are optional, and can therefore be omitted. If so, the content of the current `$MAIN/output/Hydro_ioniz.txt` and `$MAIN/output/Ion_species.txt` is plotted. If only the `--live` flag is used, the figure is updated by default every 4 seconds with the content of the current output files (which ATES, by defaults, overwrites every 1000th temporal iteration). To set the time update interval, specify the `n` argument with the desired number of seconds between the updates. Finally, a second figure with the post-processed profiles is created if the corresponding files (`$MAIN/output/Hydro_ioniz_adv.txt`and `$MAIN/output/Ion_species_adv.txt`) are found in the `$MAIN/output` directory.
+
 
 ## References
 <a id="1">[1]</a> 
