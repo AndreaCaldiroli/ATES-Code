@@ -9,8 +9,8 @@
 	contains
 	
 	subroutine set_IC(W,T,f_sp)
-	!real*8, dimension(1-Ng:N+Ng), intent(in) :: r
 	integer :: j
+	real*8 :: b0_eff
 	real*8, dimension(1-Ng:N+Ng,3), intent(out) :: W
 	real*8, dimension(1-Ng:N+Ng), intent(out) :: T
 	real*8, dimension(1-Ng:N+Ng,5), intent(out) :: f_sp
@@ -19,7 +19,9 @@
 	!--- Set initial conditions for thermodynamic variables ---!
 	
 	! Density
-      W(:,1) = (/ (rho1*exp(-Gphi_c(j) + Gphi_c(0)), j = 1-Ng,N+Ng) /)
+	b0_eff = 1.0	! Change if the planet b0 is too low - only for IC
+      W(:,1) = (/ (rho1*exp(b0_eff*(-Gphi_c(j) + Gphi_c(0))), 	&
+      		   j = 1-Ng,N+Ng) /)
       where (W(:,1).lt.(1.0e-8)) W(:,1) = 1.0e-8
       
       ! Velocity
