@@ -12,8 +12,8 @@ pl_names = ["55Cnce",    # 55Cnce
             "HD189733b", # HD189733b
             "HD209458b", # HD209458b
             "HD97658b",  # HD97658b
-      	"LHS1140c",  # LHS1140c
       	"LHS1140b",  # LHS1140b
+	"LHS1140c",  # LHS1140c
             "WASP-10b",  # WASP-10b
             "WASP-18b",  # WASP-18b
             "WASP-38b",  # WASP-38b
