@@ -129,16 +129,16 @@ str=" $comp_str \
       $DIR_INIT/init.f90"
       
 # Add main file to execution
-str="$str $DIR_MAIN/Hydro_ioniz.f90"
+str="$str $DIR_MAIN/ATES_main.f90"
 
 # Add output file to string of execution
-compile="$str -o $DIR_MAIN/Hydro_ioniz.x"
+compile="$str -o $DIR_MAIN/ATES.x"
 
 # Compile program and modules
 eval $compile
 
 # Exectution string
-exec_str="$DIR_MAIN/Hydro_ioniz.x"
+exec_str="$DIR_MAIN/ATES.x"
 
 # Exectute code
 eval $exec_str
