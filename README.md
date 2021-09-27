@@ -19,7 +19,7 @@ The code doesn't require any special installation, and can be directly downloade
 
 The main directory (`$MAIN`) of the code consists of the following elements:
 * the main code file `$MAIN/ATES_main.f90`;
-* the bash script `$MAIN/ATES_run.sh` that takes care of the compilation and the execution of the code;
+* the bash script `$MAIN/run_ATES.sh` that takes care of the compilation and the execution of the code;
 * the `$MAIN/src` directory, where all the code modules are stored.
 * the `$MAIN/python_plots.py` python3 for live plots.
 
@@ -44,15 +44,15 @@ In the `$MAIN/src/modules` subdirectory, the code's modules are subdivided as fo
 
 Once exctracted, it is necessary to give execution permission to the `$MAIN/run_program.sh` file:
 
-    chmod +x $MAIN/ATES_run.sh
+    chmod +x $MAIN/run_ATES.sh
     
 In order to run the code, the bash file must be executed. By default, ATES is compiled with gfortran. In the terminal, it is sufficient to execute:
    
-    .$MAIN/ATES_run.sh
+    .$MAIN/run_ATES.sh
 
 To force the use of the `ifort` compiler, run the following command:
 
-    .$MAIN/ATES_run.sh --ifort
+    .$MAIN/run_ATES.sh --ifort
 
 The user is asked to insert the physical parameters of the system to be simulated. See [[1]](#1) for a detailed explanation of such parameters. If a system is not available in the precompiled archive (which is stored in `$MAIN/src/utils/params_table.txt`), it is possible to add it to the default list for later simulations by using the `Add planet` button. 
 
