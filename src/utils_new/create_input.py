@@ -369,8 +369,11 @@ if os.path.isfile("input.inp") or os.path.isfile("input_temp.inp"):
       # Update labels
       upd_labels()
       
-      # Update the alpha box status
-      fc.upd_alpha()
+      # Update the alpha box status if it is not used
+      app_m = glob.Cbox_list[4].get()
+      
+      if app_m != "alpha = ":
+      	fc.upd_alpha()
 
 else: # If no input.inp exists, fill default entries
 
