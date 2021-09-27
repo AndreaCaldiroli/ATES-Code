@@ -33,6 +33,7 @@
       real*8,parameter ::  e_mid_XUV = 123.98         ! 100 Angstrom in eV
       real*8,parameter ::  e_low_XUV = 13.6           ! 912 Angstrom in eV
       real*8,parameter ::  du_th = 1.0e-3             ! Escape momentum variation
+      	real*8,parameter ::  RJ = 6.9911e9
 	real*8,parameter :: MJ = 1.898e30
 	real*8,parameter :: Msun = 1.989e33
       real*8,parameter :: AU = 1.495978707e13
