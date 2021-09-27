@@ -12,7 +12,12 @@
       
       subroutine set_energy_vectors
       integer :: i
-
+	
+	! Set the energy band of the spectrum
+      	e_top = e_top_XUV
+      	e_mid = e_mid_XUV
+      	e_low = e_low_XUV
+      
 	! Energy grid
 	e_v = (/ ( e_low*(e_top/e_low)**((i-1.0)/(Nl-1.0)), i =1,Nl) /) 
 	 
