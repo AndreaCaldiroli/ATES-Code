@@ -21,7 +21,7 @@ The main directory (`$MAIN`) of the code consists of the following elements:
 * the main code file `$MAIN/ATES_main.f90`;
 * the bash script `$MAIN/run_ATES.sh` that takes care of the compilation and the execution of the code;
 * the `$MAIN/src` directory, where all the code modules are stored.
-* the `$MAIN/python_plots.py` python3 for live plots.
+* the `$MAIN/ATES_plots.py` python3 for live plots.
 
 The `$MAIN/src` directory contains three major sudirectories:
 * the `$MAIN/src/utils` folder contains the python3 files dedicated for the creatioin of the input interface;
@@ -85,9 +85,9 @@ If the `Load IC` flag is active in the input window, the code automatically choo
 
 ## Plotting results
 
-The `$MAIN/python_plots.py` file can be used to plot the current status of the simulation or to follow the evolution of the profiles with a live animation. The script can be executed with the following syntax:
+The `$MAIN/ATES_plots.py` file can be used to plot the current status of the simulation or to follow the evolution of the profiles with a live animation. The script can be executed with the following syntax:
 
-    python3 $MAIN/python_plots.py --live n
+    python3 $MAIN/ATES_plots.py --live n
     
 The `--live n` arguments are optional, and can therefore be omitted. If so, the content of the current `$MAIN/output/Hydro_ioniz.txt` and `$MAIN/output/Ion_species.txt` is plotted. If only the `--live` flag is used, the figure is updated by default every 4 seconds with the content of the current output files (which ATES, by defaults, overwrites every 1000th temporal iteration). To set the time update interval, specify the `n` argument with the desired number of seconds between the updates. Finally, a second figure with the post-processed profiles is created if the corresponding files (`$MAIN/output/Hydro_ioniz_adv.txt`and `$MAIN/output/Ion_species_adv.txt`) are found in the `$MAIN/output` directory.
 
