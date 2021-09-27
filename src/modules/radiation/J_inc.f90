@@ -31,18 +31,54 @@
       	JEUVnorm = J_EUV/log(e_mid/e_low)
 
       	JXnorm = J_X/log(e_top/e_mid)
+      	
+      	! If energy range is only in EUV
+      	if (e_top.le.e_mid_XUV) then 
+      		
+	      	JEUVnorm = J_EUV/log(e_top/e_low)
+
+      		JXnorm = 0.0
+		endif
+		
+		! If energy range is only in X
+      	if (e_low.ge.e_mid_XUV) then 
+      		
+	      	JEUVnorm = 0.0
+
+      		JXnorm = J_X/log(e_top/e_low)
+		endif
+      		
       	      	
 	else
       
 		JEUVnorm = J_EUV*P1/(e_mid**P1 - e_low**P1)
 
       	JXnorm = J_X*P1/(e_top**P1 - e_mid**P1)
+      	
+      	
+      	! If energy range is only in EUV
+      	if (e_top.le.e_mid_XUV) then 
+      		
+	      	JEUVnorm = J_EUV*P1/(e_top**P1 - e_low**P1)
+
+      		JXnorm = 0.0
+		endif
+		
+		! If energy range is only in X
+      	if (e_low.ge.e_mid_XUV) then 
+      		
+	      	JEUVnorm = 0.0
+
+      		JXnorm = J_X*P1/(e_top**P1 - e_low**P1)
+		endif
+		
+		print*, log10(JEUVnorm*2e-4)
 		
 	endif      
       
       
       ! Parametrization of incident spectrum
-      if(E.lt.e_mid) then
+      if(E.lt.e_mid_XUV) then
             J_inc = JEUVnorm*E**PLind
       else
             J_inc = JXnorm*E**PLind
