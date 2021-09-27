@@ -29,12 +29,10 @@
       real*8,parameter ::  hp_erg = 6.62620e-27 	! Planck constant in CGS units
       real*8,parameter ::  hp_eV = 4.1357e-15 	      ! Planck constant (eV*s)
       real*8,parameter ::  kb_eV = 8.6167e-05 	      ! Boltzmann constant (eV)
-      real*8,parameter ::  e_top = 12.398e3           ! Maximum energy in spectrum (eV) 
-      real*8,parameter ::  e_mid = 123.98             ! 100 Angstrom in eV
-      real*8,parameter ::  e_low = 13.6               ! 912 Angstrom in eV
+      real*8,parameter ::  e_top_XUV = 12.398e3       ! 10 Angstrom in eV
+      real*8,parameter ::  e_mid_XUV = 123.98         ! 100 Angstrom in eV
+      real*8,parameter ::  e_low_XUV = 13.6           ! 912 Angstrom in eV
       real*8,parameter ::  du_th = 1.0e-3             ! Escape momentum variation
-      real*8 :: du                                    ! Initial momentum variation
-	real*8,parameter :: RJ = 6.9911e9
 	real*8,parameter :: MJ = 1.898e30
 	real*8,parameter :: Msun = 1.989e33
       real*8,parameter :: AU = 1.495978707e13
@@ -76,7 +74,11 @@
 	real*8 :: p0            ! Pressure normalization
 	real*8 :: q0            ! Scale normalization 
       real*8 :: b0            ! Jeans parameter at planet surface
-     
+      
+      !------- Other constants -------!
+      real*8 :: du				! Initial momentum variation
+      real*8 :: e_top,e_mid,e_low		! Energy intervals
+      
       contains
 
       ! End of module      
