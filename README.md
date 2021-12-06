@@ -21,7 +21,8 @@ The main directory (`$MAIN`) of the code consists of the following elements:
 * the main code file `$MAIN/ATES_main.f90`;
 * the bash script `$MAIN/run_ATES.sh` that takes care of the compilation and the execution of the code;
 * the `$MAIN/src` directory, where all the code modules are stored.
-* the `$MAIN/ATES_plots.py` python3 for live plots.
+* the `$MAIN/ATES_plots.py` python3 file for live plots.
+* the `$MAIN/eta_approx.py` python3 file with the approximate function of the effective efficiency from Appendix A in [[2]](#2).
 
 The `$MAIN/src` directory contains three major sudirectories:
 * the `$MAIN/src/utils` folder contains the python3 files dedicated for the creatioin of the input interface;
@@ -91,9 +92,17 @@ The `$MAIN/ATES_plots.py` file can be used to plot the current status of the sim
     
 The `--live n` arguments are optional, and can therefore be omitted. If so, the content of the current `$MAIN/output/Hydro_ioniz.txt` and `$MAIN/output/Ion_species.txt` is plotted. If only the `--live` flag is used, the figure is updated by default every 4 seconds with the content of the current output files (which ATES, by defaults, overwrites every 1000th temporal iteration). To set the time update interval, specify the `n` argument with the desired number of seconds between the updates. Finally, a second figure with the post-processed profiles is created if the corresponding files (`$MAIN/output/Hydro_ioniz_adv.txt`and `$MAIN/output/Ion_species_adv.txt`) are found in the `$MAIN/output` directory.
 
+## Approximate effective efficiency function
+
+The file `$MAIN/eta_approx.py` contains the approximate expression for the effective efficiency presented in  [[2]](#2). The file can be simply run as:
+
+    python3 $MAIN/eta_approx.py
+
+The user must provide the planetary parameters directly through the terminal window. The approximate values of the effective efficiency and the mass loss rate are printed as outputs.
 
 ## References
 <a id="1">[1]</a> 
 Caldiroli, A., Haardt, F., Gallo, E., Spinelli, R., Malsky, I., Rauscher, E., 2021, "Irradiation-driven escape of primordial planetary atmospheres I. The ATES photoionization hydrodynamics code", A&A, 655, A30 (2021).
-
+<a id="2">[2]</a> 
+Caldiroli, A., Haardt, F., Gallo, E., Spinelli, R., Malsky, I., Rauscher, E., 2021, "Irradiation-driven escape of primordial planetary atmospheres II. Evaporation efficiency of sub-Neptunes through hot Jupiters", arXiv:2112.00744.
 
