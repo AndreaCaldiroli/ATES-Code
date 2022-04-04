@@ -5,7 +5,7 @@ For any question or if you notice any bug please write an email to <andrea.caldi
 
 ## Requirements
 
-The code can be compiled with both `gfortran` (tested successfully in version 9.3.0) and `ifort` (tested on the 2021.2.0 20210228 version). For the compiler choice, see below.
+The code can be compiled with both `gfortran` (tested successfully in version 9.3.0 and newer) and `ifort` (tested on the 2021.2.0 and the 2021.5.0 versions). For the compiler choice, see below.
 A basic installation of `python3` is required. The following libraries are used: `numpy,tkinter,os,shutil,matplotlib,sys,time`.
 
 ## Installation
