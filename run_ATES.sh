@@ -46,6 +46,9 @@ DIR_TIME="$DIR_SRC/modules/time_step"
 rm -f $DIR_MAIN/*.x
 
 # Clean .mod files
+if [ ! -d $DIR_MOD ]; then
+   mkdir $DIR_MOD
+fi
 rm -f $DIR_MOD/*.mod
 
 #------- Call python interface to create input file -------#
