@@ -1,5 +1,17 @@
 # The ATES code
 
+UPDATE 22/09/23
+A new version of ATES (v2.0) is now available. The main updates to version 1.0 include:
+    - The possibility to use numerical power spectra instead of power-laws;
+    - The possibility to include the chemistry of HeI triplet state;
+    - Improved computational speed for each timestep;
+    - An updated, user friendly interface
+    - A pdf manual (currently still in production)
+This version includes also TPM (Transmission Probability Module), a python script that can be used to calculate the expected transmission feature for the Ly-alpha and the He-10830A lines directly from ATES outputs. 
+The new features of ATES and the TPM are described in a shotcoming paper.
+
+----------------------------------------------------------------------------
+
 The ATES code has been created to perform hydrodynamical simulations of the atmospheric mass loss from irradiated exoplanets. For a detailed description of the code, we refer to [[1]](#1) In the following we describe the code organization and how to run.
 For any question or if you notice any bug please write an email to <andrea.caldiroli@univie.ac.at>
 
@@ -14,6 +26,9 @@ The code doesn't require any special installation, and can be directly downloade
 
     git clone https://github.com/AndreaCaldiroli/ATES-Code
 
+The first version of ATES is still available and can be downloaded through
+    
+    git clone --branch 1.0 https://github.com/AndreaCaldiroli/ATES-Code
     
 ## Directories and files
 
