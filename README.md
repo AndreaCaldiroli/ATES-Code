@@ -3,12 +3,13 @@
 UPDATE 22/09/23
 
 A new version of ATES (v2.0) is now available. The main updates to version 1.0 include:
-    * The possibility to use numerical power spectra instead of power-laws;
-    * The possibility to include the chemistry of HeI triplet state;
-    * Improved computational speed for each timestep;
-    * An updated, user friendly interface
-    * A pdf manual (currently still in production)
-This version includes also TPM (Transmission Probability Module), a python script that can be used to calculate the expected transmission feature for the Ly-alpha and the He-10830A lines directly from ATES outputs. 
+* The possibility to use numerical power spectra instead of power-laws;
+* The possibility to include the chemistry of HeI triplet state;
+* Improved computational speed for each timestep;
+* An updated, user friendly interface
+* A pdf manual (currently still in production)
+  
+This ATES version includes also TPM (Transmission Probability Module), a python script that can be used to calculate the expected transmission feature for the Ly-alpha and the He-10830A lines directly from ATES outputs. 
 The new features of ATES and the TPM are described in a shotcoming paper.
 
 ----------------------------------------------------------------------------
