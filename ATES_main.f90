@@ -3,6 +3,9 @@
       use global_parameters
       use Read_input
       use Initialization
+      use setup_report
+      use eval_time_step
+      use utils
       use Conversion
       use ionization_equilibrium
       use Reconstruction_step
@@ -14,9 +17,11 @@
       
       implicit none
       
-
+      ! Logical variables
+      logical :: l_isnan = .false.
+      
       ! Integers variables
-      integer :: k,j
+      integer :: j,k
       
       ! Timing variables
       integer :: n_hrs 
@@ -24,6 +29,7 @@
       real*8  :: start, finish 
       real*8  :: exec_time
       real*8  :: n_sec
+      real*8  :: dum
       
       ! Momentum variables
       real*8, dimension(1-Ng:N+Ng) :: mom
@@ -37,23 +43,28 @@
       
       ! Mdot value
       real*8 :: Mdot
- 
+      
       ! Vectors of thermodynamical variables
       real*8, dimension(1-Ng:N+Ng) :: rho,v,E,p,T,cs
       real*8, dimension(1-Ng:N+Ng) :: heat,cool
       real*8, dimension(1-Ng:N+Ng) :: eta 
       real*8, dimension(1-Ng:N+Ng) :: nhi,nhii 
       real*8, dimension(1-Ng:N+Ng) :: nhei,nheii,nheiii 
+      real*8, dimension(1-Ng:N+Ng) :: nheiTR
       real*8, dimension(1-Ng:N+Ng) :: ne,n_tot  
-      real*8, dimension(1-Ng:N+Ng,5) :: f_sp
+      real*8, dimension(1-Ng:N+Ng,6) :: f_sp
        
       ! Conservative and primitive vectors
-      real*8, dimension(1-Ng:N+Ng,3) :: u,u1,u2 
+      real*8, dimension(1-Ng:N+Ng,3) :: u,u1,u2,u_old
       real*8, dimension(1-Ng:N+Ng,3) :: W,WL,WR
           
       ! Flux and source vectors
       real*8, dimension(1-Ng:N+Ng,3) :: dF,S
       
+      !------------------------------------------------! 
+      
+      ! Open output report file 
+      open(unit = outfile, file = 'ATES.out')
       
       !------------------------------------------------!
       
@@ -64,37 +75,37 @@
       
       ! Initialize simulations
       call init(W,u,f_sp)     
-            
+
       !------------------------------------------------!
       
+      ! Generate report of the current setup
+      call write_setup_report
+
+	!---------------------------------------------------!
+
+	! Close outfile
+	close(unit = outfile)
+
+      !------------------------------------------------!
+
       !---- Start computation ----!
       
       ! Get starting time
+      write(*,*) '(ATES_main.f90) Starting time integration..'
       start = omp_get_wtime()
       
       !------ Main temporal loop ------!
-      
-      do while(du.ge.du_th)
+      do while( .not.is_mom_const .or. force_start)
 
             !---- Time step evaluation ----! 
-            
-            ! Extract phisical variables
-            rho = W(:,1)
-            v   = W(:,2)
-            p   = W(:,3)
-            
-            ! Evaluate sound speed
-            cs = sqrt(g*p/rho)
-            
-            ! Maximum eigenvalue
-            alpha = maxval(abs(v) + cs)
-
-            ! Evaluate time step according to CFL condition
-            dt = CFL*minval(dr_j/(abs(v) + cs))         
+            call eval_dt(W,dt)
             
             !-------------------------------------------------!
             
             !--- Thermodynamic evolution ---!
+            
+            ! Save previous step solution
+            u_old = u
             
             ! FIRST RK STEP
             
@@ -124,7 +135,6 @@
 
             ! Apply boundary conditions            
             call Apply_BC(u2,u2)
-          
             
             !----------------------------
             
@@ -146,7 +156,7 @@
  		
  		!---- Ionization Equilibrium ----!
  		
-            ! Exctract primitive variables
+            ! Extract primitive variables
             call U_to_W(u,W)
             rho = W(:,1)
             v   = W(:,2)
@@ -155,13 +165,16 @@
             ! Evaluate species densities
             nhi    = rho*f_sp(:,1)
             nhii   = rho*f_sp(:,2)
-            nhei   = rho*f_sp(:,3)
-            nheii  = rho*f_sp(:,4)
-            nheiii = rho*f_sp(:,5)
-            ne     = nhii + nheii + 2.0*nheiii
+            if (thereis_He) then 
+                  nhei   = rho*f_sp(:,3)
+                  nheii  = rho*f_sp(:,4)
+                  nheiii = rho*f_sp(:,5)
+                  if (thereis_HeITR) nheiTR = rho*f_sp(:,6)
+            endif
+            call calc_ne(nhii,nheii,nheiii,ne)
             
             ! Total number density
-            n_tot = nhi + nhii + nhei + nheii + nheiii 
+            call calc_ntot(nhi,nhii,nhei,nheii,nheiii,nheiTR,n_tot)
               	 
             ! Temperature profile
             T = p/(n_tot + ne)
@@ -172,13 +185,16 @@
             !Evaluate partial densities
             nhi    = rho*f_sp(:,1)
             nhii   = rho*f_sp(:,2)
-            nhei   = rho*f_sp(:,3)
-            nheii  = rho*f_sp(:,4)
-            nheiii = rho*f_sp(:,5)
-            ne     = nhii + nheii + 2.0*nheiii
+            if (thereis_He) then 
+                  nhei   = rho*f_sp(:,3)
+                  nheii  = rho*f_sp(:,4)
+                  nheiii = rho*f_sp(:,5)
+                  if (thereis_HeITR) nheiTR = rho*f_sp(:,6)
+            endif
+            call calc_ne(nhii,nheii,nheiii,ne)
             
             ! Total number density
-            n_tot = nhi + nhii + nhei + nheii + nheiii 
+            call calc_ntot(nhi,nhii,nhei,nheii,nheiii,nheiTR,n_tot)
             
             ! Evaluate updated pressure
             p = (n_tot + ne)*T 
@@ -191,7 +207,6 @@
             ! Revert to conservative 
             call W_to_U(W,u)
   	
-  	
   	      !------------------------------------------------!
   	      
   	      ! Evolve solution in time due to source terms
@@ -203,7 +218,7 @@
 
             !------------------------------------------------!
             
-            ! Convert to physical variables and exctract profiles
+            ! Convert to physical variables and extract profiles
             call U_to_W(u,W)
             rho = W(:,1)
             v   = W(:,2)
@@ -211,15 +226,18 @@
             E   = u(:,3)
             
             ! Evaluate ionized densities and electron density
-  	      nhi    = rho*f_sp(:,1)
-		nhii   = rho*f_sp(:,2)
-		nhei   = rho*f_sp(:,3)
-		nheii  = rho*f_sp(:,4)
-		nheiii = rho*f_sp(:,5)
-  	      ne     = nhii + nheii + 2.0*nheiii
+            nhi    = rho*f_sp(:,1)
+            nhii   = rho*f_sp(:,2)
+            if (thereis_He) then 
+                  nhei   = rho*f_sp(:,3)
+                  nheii  = rho*f_sp(:,4)
+                  nheiii = rho*f_sp(:,5)
+                  if (thereis_HeITR) nheiTR = rho*f_sp(:,6)
+            endif
+  	      call calc_ne(nhii,nheii,nheiii,ne)
   	      
   	      ! Total number density
-  	      n_tot = nhi + nhii + nhei + nheii + nheiii  
+  	      call calc_ntot(nhi,nhii,nhei,nheii,nheiii,nheiTR,n_tot)
   	      
   	      ! Temperature profile
   	      T = p/(n_tot + ne)
@@ -227,9 +245,6 @@
 		! Evaluate momentum
 		mom = rho*v*r*r
 		
-	 	! Update value of veloocity at boundary
-		v_bc = sum(mom(j_min:N))/(1.0*(N-j_min+1))
-		            
             !---------------------------------------------------!
         
             !--- Loop counters and escape condition ---!
@@ -243,48 +258,88 @@
 
             ! Evaluate relative momentum variation
             du = abs((mom_max-mom_min)/mom_min)
-                       
+            
+            ! Evaluate variation of time derivative          
+      	u(:,2) = u(:,2) + 1.0e-16 ! To avoid division by zero          
+	      
+	      ! --- Infty-norm
+	      dtu = max(maxval(abs(1.0-u(j_min:N,1)/u_old(j_min:N,1))), &
+	      	    maxval(abs(1.0-u(j_min:N,2)/u_old(j_min:N,2))))
+		dtu = max(maxval(abs(1.0-u(j_min:N,3)/u_old(j_min:N,3))), &
+	      	    dtu)
+            
+            ! Adjust logical for loop if necessary
+            is_mom_const = du .lt. du_th
+	      is_zero_dt   = dtu .lt. dtu_th
+            
             ! Write to standard output
-            write(*,*) count,du
+            write(*,*) count,du !,dtu 
+				
+            !---------------------------------------------------!
+            
+            ! Detect NaNs
+            do j = 1-Ng,N+Ng
+            	do k = 1,3
+            		dum = u(j,k)
+            		if (dum.ne.dum) then
+                              write(*,*)
+            			write(*,'(A20,F8.6)') 'NaN detected at r = ',r(j)
+                              write(*,'(A6,E13.6)') 'rho = ',W(j,1)*n0
+                              write(*,'(A4,E13.6)') 'v = ',W(j,2)*v0/1.0e5
+                              write(*,'(A4,E13.6)') 'p = ',W(j,3)*p0
+                              write(*,'(A4,F8.1)')  'T = ',T(j)*T0
+                              write(*,'(A6,E13.6)') 'nhi = ',nhi(j)*n0
+                              write(*,'(A7,E13.6)') 'nhii = ',nhii(j)*n0
+                              write(*,'(A7,E13.6)') 'nhei = ',nhei(j)*n0
+                              write(*,'(A8,E13.6)') 'nheii = ',nheii(j)*n0
+                              write(*,'(A9,E13.6)') 'nheiii = ',nheiii(j)*n0
+                              write(*,'(A9,E13.6)') 'nheiTR = ',nheiTR(j)*n0
+                              l_isnan = .true.
+                        endif
+            	enddo
+         	enddo
+            if(l_isnan) exit
             
             !---------------------------------------------------!
             
-            !--- Write to files every 100th iteration---! 
-            
+            !--- Write to files every 1000th iteration---! 
             if (mod(count,1000).eq.1) then
                   
                   ! Write thermodynamic and ionization profiles
                   call write_output(rho,v,p,T,heat,cool,eta,    &
-                                    nhi,nhii,nhei,nheii,nheiii,'eq')
+                                    nhi,nhii,nhei,nheii,nheiii, &
+                                    nheiTR,'eq')
                                    
             endif     
+            
+            ! Exit from temporal loop if only post processing has to be done
+	      if (do_only_pp) exit
+
+            ! Force continue for the first 1000 loops if force_start is enabled
+            if (force_start) force_start = count .le. 1000
             
       !---------------------------------------------------!
             
       ! End of temporal while loop      
       enddo
+      write(*,*) '(ATES_main.f90) Time integration done.'
 
       !---------------------------------------------------!
       
       ! Write final thermodynamic and ionization profiles
+      write(*,*) '(ATES_main.f90) Writing final results to file..'
       call write_output(rho,v,p,T,heat,cool,eta,    &
-                        nhi,nhii,nhei,nheii,nheiii,'eq')
-      
-      write(*,*) ' '
-      write(*,*) "-- Time integration done --"
-      
+                        nhi,nhii,nhei,nheii,nheiii,nheiTR,'eq')
+
       !---------------------------------------------------!
       
-      write(*,*) ' '
-      write(*,*) "-- Starting post-processing routine --"
-      
-      ! Set advection varyable to true
+      ! Post processing to include advection
+      write(*,*) '(ATES_main.f90) Starting the post processing routine..'
 
       call post_process_adv(rho,v,p,T,heat,cool,eta,    &
-                            nhi,nhii,nhei,nheii,nheiii)
+                            nhi,nhii,nhei,nheii,nheiii,nheiTR)
       
-      write(*,*) ' '
-      write(*,*) "-- Post-processing routine done --"                           
+      write(*,*) '(ATES_main.f90) Post processing routine done.'                           
       
       !---------------------------------------------------!                            
                                     
@@ -305,7 +360,7 @@
       
       !---------------------------------------------------!
       
-      ! Choose index to evaluate Mdot     
+      ! Choose index to evaluate Mdot far enough from the top boundary  
       j = N - 20
       
       ! Evaluate steady state log of Mdot
@@ -318,13 +373,20 @@
       
       ! Write Mdot in output
       write(*,*) ' '
-      write(*,*) '---- Results ----'
+      write(*,*) '----- Results -----'
       write(*,*) ' '
       write(*,*) '---> 2D approximate method: ', appx_mth
       write(*,101) ' ---> Log10 of steady-state Mdot = ', Mdot, ' g/s'
       
-101   format (A35,F5.2,A4)
+      ! Write Mdot to report file 
+      open(unit = outfile, file = 'ATES.out', access = 'append' )
+      	write(outfile,101) ' '
+      	write(outfile,102) ' - Log10 of steady-state Mdot = ', Mdot, ' g/s'
+      close(unit = outfile)
       
+101   format (A35,F5.2,A4)
+102   format (A32,F5.2,A4)
+
       !---------------------------------------------------!
       
       ! End of program

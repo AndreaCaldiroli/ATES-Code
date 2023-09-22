@@ -1,7 +1,17 @@
 #!/bin/bash
 
-# Executable bash script to tun the full code        
+# Executable bash script to run the ATES code  
 
+echo '=============================================='
+echo '|                                            |'
+echo '|                                            |'
+echo '|            WELCOME TO ATES-2.0             |'
+echo '|                                            |'
+echo '|                                            |'
+echo '=============================================='
+echo ''
+echo 'For instruction on how to use, please consult'
+echo ' https://github.com/AndreaCaldiroli/ATES-Code'
 #------- Directories -------#
 
 # Current directory
@@ -47,7 +57,7 @@ if [ ! -f "$TABLE_FILE" ]; then
       mv "params_table.txt" "$DIR_UTILS/params_table.txt"
 fi
 
-python3 -W ignore "$DIR_UTILS/create_input.py"
+python3 -W ignore "$DIR_UTILS/ATES_interface_main.py"
 
 #------- Check input parameters -------#
 
@@ -56,35 +66,27 @@ INPUT_FILE="$DIR_MAIN/input.inp"
 # Check if input parameters file exists
 echo "Searching for the input parameters file..."
 if [ -f "$INPUT_FILE" ]; then
-
-      echo "Input file found. Proceeding..."
-
+   echo "Input file found. Proceeding..."
 else  # Abort if no input.inp exists
 
-      echo "Missing input parameter file."
-      echo "Please create an input.inp file"
-      exit 1
+   echo "Unable to find a valid input file."
+   echo "Please create one through ATES interface."
+   exit 1
 fi
-
 
 # Create output directory if it doesn't exists
 if [ ! -d "$DIR_MAIN/output" ]; then
-      mkdir "$DIR_MAIN/output"
+   mkdir "$DIR_MAIN/output"
 fi
 
 #------- Executing fortran file -------#
 
-echo "
-------- STARTING SIMULATION -------
-"
-
 # Define compiler string
 if [[ $1 = "--ifort" ]]; then	
-	comp_str="ifort -module "$DIR_MOD" -qopenmp -no-wrap-margin"
+	comp_str="ifort -O3 -module "$DIR_MOD" -qopenmp -no-wrap-margin"
 else
-	comp_str="gfortran -J"$DIR_MOD" -I"$DIR_MOD" -fopenmp -g -fbacktrace"
+	comp_str="gfortran -J"$DIR_MOD" -I"$DIR_MOD" -fopenmp -fbacktrace"
 fi
-
 
 # Define string with order of compilation
 str=" $comp_str \
@@ -92,16 +94,20 @@ str=" $comp_str \
       $DIR_FILES/input_read.f90\
       $DIR_FILES/load_IC.f90\
       $DIR_FILES/write_output.f90\
+      $DIR_FILES/write_setup_report.f90\
       $DIR_FUNC/grav_field.f90\
       $DIR_FUNC/cross_sec.f90\
       $DIR_FUNC/UW_conversions.f90\
+      $DIR_FUNC/utilities.f90\
       $DIR_NLSOLVE/dogleg.f90\
       $DIR_NLSOLVE/enorm.f90\
       $DIR_NLSOLVE/hybrd1.f90\
       $DIR_NLSOLVE/qform.f90\
       $DIR_NLSOLVE/r1mpyq.f90\
       $DIR_NLSOLVE/System_HeH.f90\
-      $DIR_NLSOLVE/System_implicit_adv_HeH.f90
+      $DIR_NLSOLVE/System_HeH_TR.f90\
+      $DIR_NLSOLVE/System_implicit_adv_HeH.f90\
+      $DIR_NLSOLVE/System_implicit_adv_HeH_TR.f90\
       $DIR_NLSOLVE/dpmpar.f90\
       $DIR_NLSOLVE/fdjac1.f90\
       $DIR_NLSOLVE/hybrd.f90\
@@ -109,8 +115,10 @@ str=" $comp_str \
       $DIR_NLSOLVE/r1updt.f90\
       $DIR_NLSOLVE/System_H.f90\
       $DIR_NLSOLVE/System_implicit_adv_H.f90
+      $DIR_RAD/sed_read.f90\
       $DIR_RAD/J_inc.f90\
       $DIR_RAD/Cool_coeff.f90\
+      $DIR_RAD/util_ion_eq.f90\
       $DIR_RAD/ionization_equilibrium.f90\
       $DIR_NLSOLVE/T_equation.f90\
       $DIR_PPC/post_process_adv.f90\
@@ -122,6 +130,7 @@ str=" $comp_str \
       $DIR_FLUX/speed_estimate_ROE.f90\
       $DIR_FLUX/Num_Fluxes.f90\
       $DIR_TIME/RK_rhs.f90\
+      $DIR_TIME/eval_dt.f90\
       $DIR_INIT/define_grid.f90\
       $DIR_INIT/set_energy_vectors.f90\
       $DIR_INIT/set_gravity_grid.f90\
@@ -145,12 +154,5 @@ eval $exec_str
 
 # Print when execution is over
 echo "
------ FORTRAN EVALUATION DONE -----"
-
-#------- Python plots -------#
-
-# Run python_plots
-#python3 -W ignore python_plots.py 
-
-
-
+----- ATES shutdown -----"
+echo '=============================================='

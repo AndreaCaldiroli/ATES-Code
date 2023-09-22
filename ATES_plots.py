@@ -9,7 +9,53 @@ if len(sys.argv) == 1: animate = 'False'
 if len(sys.argv) == 2: animate = 'True'; sec = 4
 if len(sys.argv) == 3: animate = 'True'; sec = float(sys.argv[2])
 
+# ------------------------------------------------------------------
 
+# Useful functions
+
+# Read word_number-th word from string_in
+def get_word(string_in,word_number):
+	
+	# Initialize counters and string 
+	count = 0 
+	c_string = ''
+	c_word_counter = 0
+	string = string_in.strip()
+
+	# Keep reading through string
+	while count >= 0 and count <= len(string): 
+		
+		if count == len(string):
+			out_word = c_string
+			c_word_counter += 1
+			# Return word
+			if c_word_counter == word_number:
+				return out_word	
+		
+		# If blank space or at the end of the string
+		if string[count:count+1] != ' ':
+			
+			c_string += string[count:count+1] 
+			count += 1
+		else: 
+		
+			
+			if string[count-1:count] != ' '  or count == len(string):
+				# Update counters and get word			
+				out_word = c_string
+				c_word_counter += 1
+				# Reset reading string
+				c_string = ''
+				# Return word
+				# Update counter
+				count += 1
+				if c_word_counter == word_number:
+					return out_word
+			else:
+				count += 1
+				continue
+				
+# --------------------------------------------------------------------
 # Phisical constants
 kb = 1.38e-16           # Boltzmann constant in CGS units
 mu = 1.673e-24          # Hydrogen atom mass (g)       
@@ -21,35 +67,37 @@ RJ = 6.9911e9
 
 # Planetary parameters
 # Get planetary radius from the input.inp file
-with open("input.inp",'r') as fi:
-      data = fi.readline()
-      num = 1
-      while data:
-            data = fi.readline()
-            if(num == 5):
-                  R0 = float(data)*RJ
-            if(num == 15):
-                  appx_mth = data
-            num += 1
+with open("input.inp",'r') as f:
 
+	data = f.readline()
+	num = 1
+	while data:
+		data = f.readline()
+		if num == 2:
+			R0 = float(get_word(data,4))*RJ
+		if num == 8:
+			appx_mth = get_word(data,4)
+			if appx_mth == 'Rate/2': appx_mth = 'Rate/2 + Mdot/2'
+			if appx_mth == 'Rate/4': appx_mth = 'Rate/4 + Mdot'
+		num += 1
+		
+f.close()
 
 # Hydro profiles
-r,rho,v,p,T,heat,cool,eta = \
+r,rho,v,p,T,heat,cool = \
       np.loadtxt('./output/Hydro_ioniz.txt',unpack = True)
 rho = rho*mu
 
 # Load our ionization profiles
-r,nhi,nhii,nhei,nheii,nheiii = \
+r,nhi,nhii,nhei,nheii,nheiii,nheiTR = \
       np.loadtxt('./output/Ion_species.txt',unpack = True)
 
 
 #--------------------------------------------------
 
 # Adimensionalization parameters
-T0 = T[0]                 # Surface temperature
-v0 = np.sqrt(kb*T0/mu)    # Scale velocity
 N  = r.size               # Number of cells
-vlim = 1.2*v.max()*v0*1e-5
+vlim = 1.2*v.max()*1e-5
 if v.max() < 0 :
 	vlim = 15.0
 
@@ -65,9 +113,10 @@ fhii   = nhii[:]/nh[:]      # HII fraction
 fhei   = nhei[:]/nhe[:]     # HeI fraction
 fheii  = nheii[:]/nhe[:]    # HeII fraction
 fheiii = nheiii[:]/nhe[:]   # HeIII fraction
+fheiTR = nheiTR[:]/nhe[:]   # HeITR fraction
 
 # Spherical momentum
-mom   = 4.*np.pi*v[:]*rho[:]*r[:]**2.*v0*R0**2.            
+mom   = 4.*np.pi*v[:]*rho[:]*r[:]**2.*R0**2.            
 lgmom = np.zeros(N)           
 for j in range(N):
 	if mom[j] > 0:
@@ -108,7 +157,7 @@ ax[0,0].set_xlabel('r/R$_P$')
 
 
 # Velocity
-v_line, = ax[0,1].semilogy(r,v*v0*1e-5)
+v_line, = ax[0,1].semilogy(r,v*1e-5)
 ax[0,1].set_xlim([r[0],r[-1]])
 ax[0,1].set_ylim([1.e-3,vlim])
 ax[0,1].set_title('Velocity [km s$^{-1}$]', fontdict={'weight':'bold'})
@@ -139,6 +188,7 @@ nhii_line,   = ax[1,1].semilogy(r,nhii,label = '$n_{HII}$')
 nhei_line,   = ax[1,1].semilogy(r,nhei,label = '$n_{HeI}$')
 nheii_line,  = ax[1,1].semilogy(r,nheii,label = '$n_{HeII}$')
 nheiii_line, = ax[1,1].semilogy(r,nheiii,label = '$n_{HeIII}$')
+nheiTR_line, = ax[1,1].semilogy(r,nheiTR,label = '$n_{HeI3}$', color = '#5baca7')
 ax[1,1].set_title('Ion densities [cm$^{-3}$]', fontdict={'weight':'bold'})
 ax[1,1].set_xlim([r[0],r[-1]])
 ax[1,1].set_xlabel('r/R$_P$')
@@ -158,6 +208,7 @@ ax[1,2].legend(loc = 'best')
 fhei_line,   = ax[1,3].plot(r,fhei,label = '$f_{HeI}$')
 fheii_line,  = ax[1,3].plot(r,fheii,label = '$f_{HeII}$')
 fheiii_line, = ax[1,3].plot(r,fheiii,label = '$f_{HeIII}$')
+fheiTR_line, = ax[1,3].plot(r,fheiTR,label = '$f_{HeITR}$', color = '#5baca7')
 ax[1,3].set_title('He fractions', fontdict={'weight':'bold'})
 ax[1,3].set_xlim([r[0],r[-1]])
 ax[1,3].set_ylim([0,1])
@@ -175,16 +226,16 @@ adv_hydro = cdir + "/output/Hydro_ioniz_adv.txt"
 adv_ioniz = cdir + "/output/Ion_species_adv.txt"
 
 # Make second figure if _adv files are there
-if os.path.isfile(adv_hydro ) and os.path.isfile(adv_ioniz):
+if os.path.isfile(adv_hydro) and os.path.isfile(adv_ioniz):
 
 	
 	# Hydro profiles
-	r,rho,v,p,T,heat,cool,eta = \
+	r,rho,v,p,T,heat,cool = \
 		np.loadtxt('./output/Hydro_ioniz_adv.txt',unpack = True)
 	rho = rho*mu
 
 	# Load our ionization profiles
-	r,nhi,nhii,nhei,nheii,nheiii = \
+	r,nhi,nhii,nhei,nheii,nheiii,nheiTR = \
 		np.loadtxt('./output/Ion_species_adv.txt',unpack = True)
 
 
@@ -199,7 +250,8 @@ if os.path.isfile(adv_hydro ) and os.path.isfile(adv_ioniz):
 	fhei   = nhei[:]/nhe[:]     # HeI fraction
 	fheii  = nheii[:]/nhe[:]    # HeII fraction
 	fheiii = nheiii[:]/nhe[:]   # HeIII fraction
-
+	fheiTR = nheiTR[:]/nhe[:]   # HeITR fraction
+	
 	#----------------------------------------------------#
 	
 	# Add Post-processed profiles
@@ -216,7 +268,8 @@ if os.path.isfile(adv_hydro ) and os.path.isfile(adv_ioniz):
 	ax[1,1].semilogy(r,nhei,'--',label = '$n_{HeI}$',color = '#2ca02c')
 	ax[1,1].semilogy(r,nheii,'--',label = '$n_{HeII}$',color = '#d62728')
 	ax[1,1].semilogy(r,nheiii,'--',label = '$n_{HeIII}$',color = '#9467bd')
-
+	ax[1,1].semilogy(r,nheiTR,'--',label = '$n_{HeIII}$', color = '#5baca7')
+	
 	# H fractions
 	ax[1,2].plot(r,fhi,'--',label = '$f_{HI}$',color = '#1f77b4')
 	ax[1,2].plot(r,fhii,'--',label = '$f_{HII}$',color = '#ff7f0e')
@@ -225,7 +278,7 @@ if os.path.isfile(adv_hydro ) and os.path.isfile(adv_ioniz):
 	ax[1,3].plot(r,fhei,'--',label = '$f_{HeI}$',color = '#1f77b4')
 	ax[1,3].plot(r,fheii,'--',label = '$f_{HeII}$',color = '#ff7f0e')
 	ax[1,3].plot(r,fheiii,'--',label = '$f_{HeIII}$',color = '#2ca02c')
-
+	ax[1,3].plot(r,fheiTR,'--',label = '$f_{HeITR}$', color = '#5baca7')
 
 # Print the mass loss rate
 print("2D approximation method: ", appx_mth.strip())
@@ -245,16 +298,16 @@ if animate == 'True':
 	while k > 0:
 
 		# Hydro profiles
-		r,rho,v,p,T,heat,cool,eta = \
+		r,rho,v,p,T,heat,cool = \
 			np.loadtxt('./output/Hydro_ioniz.txt',unpack = True)
 		rho = rho*mu
 
 		# Load our ionization profiles
-		r,nhi,nhii,nhei,nheii,nheiii = \
+		r,nhi,nhii,nhei,nheii,nheiii,nheiTR = \
 			np.loadtxt('./output/Ion_species.txt',unpack = True)
 
 		# Spherical momentum
-		mom   = 4.*np.pi*v[:]*rho[:]*r[:]**2.*v0*R0**2.            
+		mom   = 4.*np.pi*v[:]*rho[:]*r[:]**2.*R0**2.            
 		lgmom = np.zeros(N)           
 		for j in range(N):
 			if mom[j] > 0:
@@ -271,10 +324,11 @@ if animate == 'True':
 		fhei   = nhei[:]/nhe[:]     			# HeI fraction
 		fheii  = nheii[:]/nhe[:]    			# HeII fraction
 		fheiii = nheiii[:]/nhe[:]   			# HeIII fraction
-
+		fheiTR = nheiTR[:]/nhe[:]   			# HeIII fraction
+		
 		# Update data for plot
 		rho_line.set_ydata(rho) 
-		v_line.set_ydata(v*v0*1e-5)
+		v_line.set_ydata(v*1e-5)
 		p_line.set_ydata(p)
 		T_line.set_ydata(T)
 		mom_line.set_ydata(lgmom)
@@ -283,15 +337,17 @@ if animate == 'True':
 		nhei_line.set_ydata(nhei)
 		nheii_line.set_ydata(nheii)
 		nheiii_line.set_ydata(nheiii)
+		nheiTR_line.set_ydata(nheiii)
 		fhi_line.set_ydata(fhi)
 		fhii_line.set_ydata(fhii)
 		fhei_line.set_ydata(fhei)
 		fheii_line.set_ydata(fheii)
 		fheiii_line.set_ydata(fheiii)
+		fheiTR_line.set_ydata(fheiii)
 		
 		# Update axis limits
 		
-		vlim = 1.2*v.max()*v0*1e-5
+		vlim = 1.2*v.max()*1e-5
 		if v.max() < 0 :
 			vlim = 15.0
 		
@@ -309,5 +365,6 @@ if animate == 'True':
 		time.sleep(sec)
 		k = k + 1
 	
-	 
+# ------------------------------------------------------------------- !
+
 
