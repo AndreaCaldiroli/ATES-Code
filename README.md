@@ -1,6 +1,7 @@
 # The ATES code
 
 UPDATE 22/09/23
+
 A new version of ATES (v2.0) is now available. The main updates to version 1.0 include:
     - The possibility to use numerical power spectra instead of power-laws;
     - The possibility to include the chemistry of HeI triplet state;
