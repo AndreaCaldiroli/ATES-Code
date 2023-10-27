@@ -450,7 +450,7 @@ else:
     Reff_HD = Rp*np.sqrt((hHD + transit_depth)/transit_depth)
     
 v_rot_HD 	  = v_ang*Reff_HD  # [m/sec]
-dl_gauss_HD 	  = 10830.0*1e-10*(v_rot_HD/c_light)
+dl_gauss_HD 	  = 1215.0*1e-10*(v_rot_HD/c_light)
 sigma_rot_HD 	  = dl_gauss_HD/(2.0*np.sqrt(2.0*np.log(2.0)))
 gaussian_vrot_HD = np.exp(-0.5*(v_gauss_HD[:]/sigma_rot_HD)**2.0)
 convolved_rot_prob_HD = convolve(convolved_avg_prob_HD, gaussian_vrot_HD, boundary = 'extend')
@@ -522,8 +522,8 @@ plt.plot(l_plot_HI, avg_prob_HD, '--', label = 'Theoretical T$_{{\lambda}}$ = {}
 plt.plot(l_plot_HI, convolved_avg_prob_HD, '-.', label = 'Instrument conv. T$_{{\lambda}}$ = {} $\%$'.format(round(Tl_HI_conv,2)))
 plt.plot(l_plot_HI, convolved_rot_prob_HD, label = 'Planet rot. + Inst. conv. T$_{{\lambda}}$ = {} $\%$'.format(round(Tl_HI_conv_rot,2)))
 
-dlm_ism = (1.0 - 3e5/c_light)*1.0e10
-dlp_ism = (1.0 + 3e5/c_light)*1.0e10
+dlm_ism = (1.0 - 3e4/c_light)*1.0e10
+dlp_ism = (1.0 + 3e4/c_light)*1.0e10
 plt.fill_between(np.arange(lA*dlm_ism,lA*dlp_ism,0.01),0, 1.2, \
                  color = gray, hatch = '//', alpha = 0.1,
                  label = r'ISM absorption $\pm 30$ km/s')
