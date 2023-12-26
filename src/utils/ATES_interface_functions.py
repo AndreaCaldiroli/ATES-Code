@@ -222,7 +222,7 @@ def reset_func(*args):
 	glob.widgets['resc'].insert(0,'2.00')
 	glob.widgets['heh'].insert(0,'0.083333333') 
 	glob.widgets['appxmth'].set('Rate/2 + Mdot/2') 
-	glob.widgets['spectrum'].set('Spectrum..')
+	glob.widgets['spectrum'].set('Choose..')
 	glob.widgets['spec_prop'].insert(0,'-1.0')
 	glob.widgets['grid'].set('Mixed')
 	glob.widgets['numflux'].set('HLLC')
@@ -562,7 +562,7 @@ def spectrum_func(*args):
 	if spec_type == glob.sp_type[2]:	# Monochromatic
 			
 		# Change label
-		glob.widgets['lbl_spec'].config(text = "Radiation energy")
+		glob.widgets['lbl_spec'].config(text = "Radiation energy [eV]")
 		
 		# Disable PLindex and spectrum file entries
 		glob.widgets['browse'].config(state = tk.DISABLED)
@@ -962,13 +962,21 @@ def start_func(*args):
 			sp_file = glob.widgets['spec_prop'].get()
 			f.write('%s' %('\nSpectrum file: ' + sp_file.strip()))	
 		
-		if sp_type == glob.sp_type[1]:	# Power law
+		elif sp_type == glob.sp_type[1]:	# Power law
 			PLind = glob.widgets['spec_prop'].get()
 			f.write('%s' %('\nPower-law index: ' + PLind.strip()))	
 		
-		if sp_type == glob.sp_type[2]:	# Monochromatic
+		elif sp_type == glob.sp_type[2]:	# Monochromatic
 			elow = glob.widgets['spec_prop'].get()
 			f.write('%s' %('\nPhoton energy [eV]: ' + elow.strip()))
+		else: # No valid spectrum file selected
+			print('ERROR: Please select a valid spectrum type')
+			
+         # Close the input file and remove it before returning
+			f.close()
+			os.remove('input_temp.inp')
+			return
+
 
 		# Only EUV status
 		OnlyEUV = glob.onlyEUV_var.get()
