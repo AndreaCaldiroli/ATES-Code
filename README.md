@@ -10,7 +10,7 @@ A new version of ATES (v2.0) is now available. The main updates to version 1.0 i
 * A pdf manual (currently still in production)
   
 This ATES version includes also TPM (Transmission Probability Module), a python script that can be used to calculate the expected transmission feature for the Ly-alpha and the He-10830A lines directly from ATES outputs. 
-The new features of ATES and the TPM are described in a shotcoming paper.
+The new features of ATES and the TPM are described in [[3]](#3).
 
 ----------------------------------------------------------------------------
 
@@ -123,4 +123,7 @@ Caldiroli, A., Haardt, F., Gallo, E., Spinelli, R., Malsky, I., Rauscher, E., 20
 
 <a id="2">[2]</a> 
 Caldiroli, A., Haardt, F., Gallo, E., Spinelli, R., Malsky, I., Rauscher, E., 2021, "Irradiation-driven escape of primordial planetary atmospheres II. Evaporation efficiency of sub-Neptunes through hot Jupiters", A&A, 663, A122, (2022).
+
+<a id="3">[3]</a> Biassoni, F., Caldiroli, A., Gallo, E., Haardt, F., Spinelli, R., and Borsa, F., 2023, "Self-Consistent Modeling of Metastable Helium Exoplanet Transits",  arXiv:2310.13052v1 (2023) 
+
 
