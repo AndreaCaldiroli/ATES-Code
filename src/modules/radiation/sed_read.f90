@@ -23,7 +23,7 @@
 	real*8 :: LEUV_int,LX_int,Df_int
 	real*8, dimension(:), allocatable :: wave_c 
 
-   write(*,*) '(sed_read.f90) Reading the numerical spetrum..'
+   write(*,*) '(sed_read.f90) Reading the numerical spectrum..'
    
 	! Open file to read number of lines to be skipped
 	!	according to the selected energy interval
