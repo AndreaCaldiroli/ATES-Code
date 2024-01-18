@@ -56,7 +56,7 @@
 			endif
 			
 			! if current energy < e_low quit loop
-			if (dum_e .lt. e_low) exit
+			if (dum_e .lt. e_low .or. io .lt. 0) exit
 			
 			! Update number of selected points
 			Nl = Nl + 1 	
