@@ -106,8 +106,8 @@
 	         
    ! Initialize vectors
    nhi    = nhi_in*n0
+	nhii   = nhii_in*n0
    if (thereis_He) then
-		nhii   = nhii_in*n0
 		nhei   = nhei_in*n0
 		nheii  = nheii_in*n0
 		nheiii = nheiii_in*n0
@@ -196,11 +196,11 @@
 
       	enddo
       	
-		! Force condition of zero helium
-		nhei   = 0.0
-		nheii  = 0.0
-		nheiii = 0.0			
-		if (thereis_HeITR) nheiTR = 0.0
+		   ! Force condition of zero helium
+		   nhei   = 0.0
+		   nheii  = 0.0
+		   nheiii = 0.0			
+		   nheiTR = 0.0
 
 	else
 		
