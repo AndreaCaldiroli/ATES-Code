@@ -298,9 +298,10 @@ def load_input(*args):
 		line = f.readline()
 		sp_file = get_word(line,3)
 		isthere_sp_file = os.path.isfile(sp_file)
-		print('WARNING: The numerical spectrum file specified in input.inp does not exists. ' 
-		  		'Please select a new one.')
-		if not isthere_sp_file: sp_file = ''
+		if not isthere_sp_file: 
+			sp_file = ''
+			print('WARNING: The numerical spectrum file specified in input.inp does not exists. ' 
+			  		'Please select a new one.')
 	
 	if sp_type == 'Power-law':		# Power law
 		line = f.readline()
