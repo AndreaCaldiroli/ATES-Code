@@ -364,7 +364,7 @@
       j = N - 20
       
       ! Evaluate steady state log of Mdot
-      Mdot = log10(4.0*pi*rho(j)*v(j)*r(j)*r(j)*n0*mu*R0*R0)
+      Mdot = log10(4.0*pi*rho(j)*v(j)*r(j)*r(j)*n0*v0*mu*R0*R0)
       
       ! Correct for the 2D approximation used
       if (appx_mth.eq.'Rate/2 + Mdot/2') Mdot = Mdot - log10(2.0)
