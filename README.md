@@ -15,7 +15,7 @@ The new features of ATES and the TPM are described in [[3]](#3).
 ----------------------------------------------------------------------------
 
 The ATES code has been created to perform hydrodynamical simulations of the atmospheric mass loss from irradiated exoplanets. For a detailed description of the code, we refer to [[1]](#1) In the following we describe the code organization and how to run.
-For any question or if you notice any bug please write an email to <andrea.caldiroli@univie.ac.at>
+For any question or if you notice any bug please write an email to <a.caldiroli@uninsubria.it>
 
 ## Requirements
 
