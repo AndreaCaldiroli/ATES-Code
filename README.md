@@ -87,7 +87,7 @@ For planetary simulations, as explained in [[1]](#1), it is suggested to use the
 The code writes the current output of the simulations on two file saved in the `$MAIN/output` directory. The `$MAIN/output/Hydro_ioniz.txt` file stores the hydrodynamical variables, which are saved in column vectors in the following order:
 1. radial distance (in unit of the planetary radius)
 2. mass density (in unit of the proton mass)
-3. velocity (in unit of the scale velocity - see [[1]](#1))
+3. velocity (in cm/s)
 4. pressure (in CGS units)
 5. Temperature (in Kelvin)
 6. Radiative heating rate (in CGS units)
