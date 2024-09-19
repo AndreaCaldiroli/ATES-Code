@@ -76,9 +76,9 @@ The user is asked to insert the physical parameters of the system to be simulate
 
 The code is executed by pressing the `Done` button. In the terminal, the current iteration number and the fractional variation of the momentum over the selected domain of interest, i.e.:
    
-   <img src="https://render.githubusercontent.com/render/math?math=\dfrac{\Delta \dot{M} }{\dot{M}} := \dfrac{\max\dot{M} - \min\dot{M}}{\min\dot{M}} \quad \text{for} \quad r>r_{esc}">
+$$ \dfrac{\Delta \dot{M} }{\dot{M}} := \dfrac{\max\dot{M} - \min\dot{M}}{\min\dot{M}} \quad \text{for} \quad r>r_{esc} $$
 
-For planetary simulations, as explained in [[1]](#1), it is suggested to use the PLM reconstruction procedure when starting the simulation from general initial conditions and stop the simulation manually when <img src="https://render.githubusercontent.com/render/math?math=\Delta \dot{M}/\dot{M} \lesssim 0.5-1">. Then, restart the simulation using the previous outputs as initial condition (see below) and using the WENO3 reconstruction method instead.
+For planetary simulations, as explained in [[1]](#1), it is suggested to use the PLM reconstruction procedure when starting the simulation from general initial conditions and stop the simulation manually when $\Delta \dot{M}/\dot{M} \lesssim 0.5-1$. Then, restart the simulation using the previous outputs as initial condition (see below) and using the WENO3 reconstruction method instead.
 
 
 
