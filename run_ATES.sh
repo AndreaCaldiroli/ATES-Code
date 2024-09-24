@@ -140,20 +140,11 @@ str=" $comp_str \
       $DIR_INIT/set_IC.f90\
       $DIR_INIT/init.f90"
       
-# Add main file to execution
-str="$str $DIR_MAIN/ATES_main.f90"
+# Compile
+$str $DIR_MAIN/ATES_main.f90 -o $DIR_MAIN/ATES.x
 
-# Add output file to string of execution
-compile="$str -o $DIR_MAIN/ATES.x"
-
-# Compile program and modules
-eval $compile
-
-# Exectution string
-exec_str="$DIR_MAIN/ATES.x"
-
-# Exectute code
-eval $exec_str
+# ... and execute
+$DIR_MAIN/ATES.x
 
 # Print when execution is over
 echo "
