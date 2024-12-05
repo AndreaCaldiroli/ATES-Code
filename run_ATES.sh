@@ -86,9 +86,11 @@ fi
 
 # Define compiler string
 if [[ $1 = "--ifort" ]]; then	
-	comp_str="ifort -O3 -module "$DIR_MOD" -qopenmp -no-wrap-margin"
+    comp_str="ifort -O3 -xHost -module "$DIR_MOD" -qopenmp -no-wrap-margin"
+elif  [[ $1 = "--ifx" ]]; then
+    comp_str="ifx -O3 -xHost -module "$DIR_MOD" -qopenmp -no-wrap-margin"
 else
-	comp_str="gfortran -J"$DIR_MOD" -I"$DIR_MOD" -fopenmp -fbacktrace"
+    comp_str="gfortran -O3 -J"$DIR_MOD" -I"$DIR_MOD" -fopenmp"
 fi
 
 # Define string with order of compilation
