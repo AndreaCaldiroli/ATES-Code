@@ -208,7 +208,7 @@ ax[1,2].legend(loc = 'best')
 fhei_line,   = ax[1,3].plot(r,fhei,label = '$f_{HeI}$')
 fheii_line,  = ax[1,3].plot(r,fheii,label = '$f_{HeII}$')
 fheiii_line, = ax[1,3].plot(r,fheiii,label = '$f_{HeIII}$')
-fheiTR_line, = ax[1,3].plot(r,fheiTR,label = '$f_{HeITR}$', color = '#5baca7')
+fheiTR_line, = ax[1,3].plot(r,fheiTR,label = '$f_{HeI3}$', color = '#5baca7')
 ax[1,3].set_title('He fractions', fontdict={'weight':'bold'})
 ax[1,3].set_xlim([r[0],r[-1]])
 ax[1,3].set_ylim([0,1])
@@ -268,7 +268,7 @@ if os.path.isfile(adv_hydro) and os.path.isfile(adv_ioniz):
 	ax[1,1].semilogy(r,nhei,'--',label = '$n_{HeI}$',color = '#2ca02c')
 	ax[1,1].semilogy(r,nheii,'--',label = '$n_{HeII}$',color = '#d62728')
 	ax[1,1].semilogy(r,nheiii,'--',label = '$n_{HeIII}$',color = '#9467bd')
-	ax[1,1].semilogy(r,nheiTR,'--',label = '$n_{HeIII}$', color = '#5baca7')
+	ax[1,1].semilogy(r,nheiTR,'--',label = '$n_{HeI3}$', color = '#5baca7')
 	
 	# H fractions
 	ax[1,2].plot(r,fhi,'--',label = '$f_{HI}$',color = '#1f77b4')
@@ -278,7 +278,7 @@ if os.path.isfile(adv_hydro) and os.path.isfile(adv_ioniz):
 	ax[1,3].plot(r,fhei,'--',label = '$f_{HeI}$',color = '#1f77b4')
 	ax[1,3].plot(r,fheii,'--',label = '$f_{HeII}$',color = '#ff7f0e')
 	ax[1,3].plot(r,fheiii,'--',label = '$f_{HeIII}$',color = '#2ca02c')
-	ax[1,3].plot(r,fheiTR,'--',label = '$f_{HeITR}$', color = '#5baca7')
+	ax[1,3].plot(r,fheiTR,'--',label = '$f_{HeI3}$', color = '#5baca7')
 
 # Print the mass loss rate
 print("2D approximation method: ", appx_mth.strip())
@@ -343,7 +343,7 @@ if animate == 'True':
 		fhei_line.set_ydata(fhei)
 		fheii_line.set_ydata(fheii)
 		fheiii_line.set_ydata(fheiii)
-		fheiTR_line.set_ydata(fheiii)
+		fheiTR_line.set_ydata(fheiTR)
 		
 		# Update axis limits
 		
