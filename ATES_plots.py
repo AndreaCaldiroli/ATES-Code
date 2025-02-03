@@ -337,7 +337,7 @@ if animate == 'True':
 		nhei_line.set_ydata(nhei)
 		nheii_line.set_ydata(nheii)
 		nheiii_line.set_ydata(nheiii)
-		nheiTR_line.set_ydata(nheiii)
+		nheiTR_line.set_ydata(nheiTR)
 		fhi_line.set_ydata(fhi)
 		fhii_line.set_ydata(fhii)
 		fhei_line.set_ydata(fhei)
