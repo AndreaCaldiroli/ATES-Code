@@ -29,7 +29,7 @@
       ! Compute derivative approximations
       sp = (W(1,:) - W(0,:))/(x(1)-x(0))
       sm = (W(0,:) - W(-1,:))/(x(0)-x(-1))
-      sd = 0.5*(W(1,:) - W(-1,:))/(x(1)-x(-1))
+      sd = (W(1,:) - W(-1,:))/(x(1)-x(-1))
       
       ! Compute limited slope with MC limiter
       call Minmod_MC(sp,sm,sd,sc)
